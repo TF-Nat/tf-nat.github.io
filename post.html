@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="A post from TF's Security Archive.">
+  <meta name="description" content="Browse TF's cybersecurity notes, CTF write-ups, bug bounty reports and research.">
   <meta name="theme-color" content="#05070b">
-  <title>Post | TF. Security Archive</title>
+  <title>Blog | TF.</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='6' fill='%2305070b'/%3E%3Ccircle cx='15' cy='15' r='13' fill='none' stroke='%2386ccff' stroke-width='1.5'/%3E%3Cg fill='%2386ccff'%3E%3Crect x='7' y='10' width='10' height='2.4'/%3E%3Crect x='10.8' y='10' width='2.4' height='11'/%3E%3Crect x='17.6' y='10' width='2.4' height='11'/%3E%3Crect x='17.6' y='10' width='6' height='2.4'/%3E%3Crect x='17.6' y='14.6' width='4.6' height='2.2'/%3E%3C/g%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="inner-page">
-  <div class="progress" aria-hidden="true"></div>
   <header class="site-header">
     <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF<span>.</span></a>
     <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
@@ -21,11 +20,41 @@
         <a class="active" href="posts.html">BLOG</a>
         <a href="about.html">ABOUT</a>
         <a href="about.html#contact">CONTACT</a>
+        <a href="https://tf-korea.tistory.com/" target="_blank" rel="noopener">TISTORY &nearr;</a>
       </nav>
     </div>
   </header>
 
-  <main data-post></main>
+  <main>
+    <section class="page-hero">
+      <p class="eyebrow">TF / Tech Blog</p>
+      <h1>The <span>Blog</span></h1>
+      <p class="lead">Notes, write-ups and research in six categories. Pick one or search.</p>
+      <p style="margin-top:1.8rem"><a class="button button-primary" href="https://tf-korea.tistory.com/" target="_blank" rel="noopener">READ ON TISTORY <span aria-hidden="true">&nearr;</span></a></p>
+    </section>
+
+    <section class="section" style="padding-top:70px" data-archive>
+      <div class="section-heading reveal">
+        <p class="eyebrow">01 / Browse by Topic</p>
+        <h2>Categories</h2>
+      </div>
+      <div class="cat-grid" data-cats></div>
+
+      <div class="section-heading" style="margin-top:4rem;margin-bottom:1.6rem">
+        <p class="eyebrow">02 / All Entries</p>
+        <h2>Posts</h2>
+      </div>
+      <div class="toolbar">
+        <button class="chip" data-reset aria-pressed="true">ALL CATEGORIES</button>
+        <label class="search">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
+          <input type="search" placeholder="search posts..." aria-label="Search posts" data-search>
+        </label>
+      </div>
+      <p class="result-count" data-count></p>
+      <div class="post-list" data-list></div>
+    </section>
+  </main>
 
   <footer class="site-footer">
     <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF<span>.</span></a>
