@@ -1,124 +1,80 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>TF | Security Archive</title>
-  <meta name="description" content="TF's Security Archive">
-
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="description" content="TF's cybersecurity blog and technical archive.">
+  <title>TF. | Security Archive</title>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-
 <body>
-
-  <!-- Navigation -->
-  <nav>
-    <a href="/" class="logo">TF.</a>
-
-    <div class="menu">
-      <a href="/posts.html">POSTS</a>
-      <a href="/about.html">ABOUT</a>
-    </div>
-  </nav>
+  <header class="site-header">
+    <a class="logo" href="index.html" aria-label="TF Home">TF<span>.</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="posts.html">BLOG</a>
+      <a href="#about">ABOUT</a>
+    </nav>
+  </header>
 
   <main>
-
-    <!-- Hero -->
-    <section class="hero">
+    <section class="hero" id="home">
       <div class="hero-content">
-
-        <p class="subtitle">
-          CYBERSECURITY · TECHNICAL ARCHIVE
-        </p>
-
-        <h1>TF's Security Archive</h1>
-
-        <p class="description">
-          메인 화면에 표시할 소개 문구를 입력하세요.
-        </p>
-
-        <div class="buttons">
-          <a href="/about.html" class="button">
-            ABOUT ME
-          </a>
-
-          <a href="/posts.html" class="button">
-            VIEW POSTS
-          </a>
+        <p class="eyebrow">CYBERSECURITY · TECHNICAL ARCHIVE</p>
+        <h1>TF's<br><span>Security Archive</span></h1>
+        <p class="hero-description">Notes, experiments, and research in cybersecurity.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="posts.html">EXPLORE THE BLOG <span aria-hidden="true">↗</span></a>
+          <a class="button button-ghost" href="#about">ABOUT TF</a>
         </div>
+      </div>
+      <div class="hero-caption"><span class="status-dot"></span> INDEPENDENT SECURITY NOTES <span class="caption-divider">/</span> EST. 2026</div>
+      <a class="scroll-cue" href="#about" aria-label="Scroll to introduction"><span></span> SCROLL TO EXPLORE</a>
+    </section>
 
+    <section class="section about-section" id="about">
+      <div class="section-heading">
+        <p class="eyebrow">01 / PROFILE</p>
+        <h2>About <span>TF</span></h2>
+      </div>
+      <div class="about-content">
+        <p class="about-role">Cybersecurity Student · Ajou University</p>
+        <p class="about-interests">Web Security <span> / </span> Cloud Security</p>
+        <p class="placeholder-note">A short introduction will be added here.</p>
       </div>
     </section>
 
-
-    <!-- Recent Posts -->
-    <section class="blog-section">
-
-      <p class="section-label">
-        01 / LATEST UPDATES
-      </p>
-
-      <h2>Recent Posts</h2>
-
+    <section class="section recent-section" id="recent-posts">
+      <div class="section-heading section-heading-row">
+        <div>
+          <p class="eyebrow">02 / LATEST ENTRIES</p>
+          <h2>Recent <span>Posts</span></h2>
+        </div>
+        <a class="text-link" href="posts.html">VIEW ALL POSTS <span aria-hidden="true">↗</span></a>
+      </div>
       <div class="post-list">
-
-        <!-- Post 1 -->
-        <article class="post-card" id="post-1">
-          <p class="post-meta">
-            YYYY.MM.DD · CATEGORY
-          </p>
-
-          <h2>Post Title</h2>
-
-          <p>
-            게시물의 간단한 소개를 입력하세요.
-          </p>
+        <article class="post-card">
+          <div class="post-meta"><span>YYYY.MM.DD</span><span>CTF &amp; WARGAME</span></div>
+          <h3><a href="posts.html">Post Title</a></h3>
+          <p>게시물의 간단한 소개를 입력하세요.</p>
         </article>
-
-
-        <!-- Post 2 -->
-        <article class="post-card" id="post-2">
-          <p class="post-meta">
-            YYYY.MM.DD · CATEGORY
-          </p>
-
-          <h2>Post Title</h2>
-
-          <p>
-            게시물의 간단한 소개를 입력하세요.
-          </p>
+        <article class="post-card">
+          <div class="post-meta"><span>YYYY.MM.DD</span><span>CLOUD SECURITY</span></div>
+          <h3><a href="posts.html">Post Title</a></h3>
+          <p>게시물의 간단한 소개를 입력하세요.</p>
         </article>
-
-
-        <!-- Post 3 -->
-        <article class="post-card" id="post-3">
-          <p class="post-meta">
-            YYYY.MM.DD · CATEGORY
-          </p>
-
-          <h2>Post Title</h2>
-
-          <p>
-            게시물의 간단한 소개를 입력하세요.
-          </p>
+        <article class="post-card">
+          <div class="post-meta"><span>YYYY.MM.DD</span><span>TECHNICAL NOTES</span></div>
+          <h3><a href="posts.html">Post Title</a></h3>
+          <p>게시물의 간단한 소개를 입력하세요.</p>
         </article>
-
       </div>
-
-      <a href="/posts.html" class="text-link">
-        VIEW ALL POSTS →
-      </a>
-
     </section>
-
   </main>
 
-
-  <!-- Footer -->
-  <footer>
-    <p>TF'S SECURITY ARCHIVE</p>
+  <footer class="site-footer">
+    <a class="logo" href="index.html">TF<span>.</span></a>
+    <p>BUILT FOR LEARNING. DOCUMENTED FOR GROWTH.</p>
+    <span>© 2026 TF</span>
   </footer>
-
 </body>
 </html>
