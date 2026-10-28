@@ -1,114 +1,126 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>About | TF's Security Archive</title>
-  <meta name="description" content="About TF">
-
-  <link rel="stylesheet" href="/assets/css/style.css">
+  <meta name="description" content="About TF — cybersecurity student at Ajou University. Projects, timeline and contact.">
+  <meta name="theme-color" content="#05070b">
+  <title>About | TF. Security Archive</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='6' fill='%2305070b'/%3E%3Ccircle cx='15' cy='15' r='13' fill='none' stroke='%2386ccff' stroke-width='1.5'/%3E%3Cg fill='%2386ccff'%3E%3Crect x='7' y='10' width='10' height='2.4'/%3E%3Crect x='10.8' y='10' width='2.4' height='11'/%3E%3Crect x='17.6' y='10' width='2.4' height='11'/%3E%3Crect x='17.6' y='10' width='6' height='2.4'/%3E%3Crect x='17.6' y='14.6' width='4.6' height='2.2'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
-
-<body>
-
-  <!-- Navigation -->
-  <nav>
-    <a href="/" class="logo">TF.</a>
-
-    <div class="menu">
-      <a href="/posts.html">POSTS</a>
-      <a href="/about.html" class="active">ABOUT</a>
+<body class="inner-page">
+  <header class="site-header">
+    <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF<span>.</span></a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+    <div class="header-right">
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="posts.html">BLOG</a>
+        <a class="active" href="about.html">ABOUT</a>
+        <a href="about.html#contact">CONTACT</a>
+      </nav>
     </div>
-  </nav>
-
+  </header>
 
   <main>
-
-    <!-- Page Header -->
-    <section class="page-header">
-      <p class="section-label">TF'S SECURITY ARCHIVE</p>
-      <h1>About</h1>
+    <section class="page-hero">
+      <p class="eyebrow">TF / Case File</p>
+      <h1>About <span>TF</span></h1>
+      <p class="lead">Cybersecurity student at Ajou University. WhiteHat School 4th &middot; Knights Frontier 3rd.</p>
     </section>
 
-
-    <!-- Introduction -->
-    <section class="about-section">
-
-      <p class="section-label">01 / PROFILE</p>
-
-      <h2>Jisoo Kim</h2>
-
-      <p class="about-text">
-        Cybersecurity Student at Ajou University
-      </p>
-
-
-      <!-- Interests -->
-      <p class="section-label">02 / AREAS OF INTEREST</p>
-
-      <div class="interest-grid">
-
-        <article class="interest-card">
-          <span>01</span>
-          <h3>Web Security</h3>
-        </article>
-
-        <article class="interest-card">
-          <span>02</span>
-          <h3>Cloud Security</h3>
-        </article>
-
+    <section class="section" id="profile">
+      <div class="dossier">
+        <aside class="id-card reveal">
+          <div class="avatar" role="img" aria-label="Night city skyline with the TF signal"><span>TF</span></div>
+          <dl>
+            <div class="field"><dt>ALIAS</dt><dd>TF</dd></div>
+            <div class="field"><dt>NAME</dt><dd>Jisu Kim</dd></div>
+            <div class="field"><dt>ROLE</dt><dd>Cybersecurity Student</dd></div>
+            <div class="field"><dt>BASE</dt><dd>Ajou University<br>Dept. of Cybersecurity</dd></div>
+            <div class="field"><dt>FOCUS</dt><dd>Web / Cloud Security</dd></div>
+            <div class="field"><dt>STATUS</dt><dd class="live">&#9679; Learning in public</dd></div>
+          </dl>
+        </aside>
+        <div class="bio reveal">
+          <p class="eyebrow">01 / Profile</p>
+          <h2>Who is <span>TF?</span></h2>
+          <p class="lead">I&rsquo;m Jisu Kim (TF), a student in the Department of Cybersecurity at Ajou University. I&rsquo;m interested in how web applications and cloud environments fail &mdash; and how to make them fail less. Right now I&rsquo;m focused on web and cloud security, and I plan to branch out into more fields.</p>
+          <p>This archive is where I keep what I learn: CTF write-ups, bug bounty notes, paper summaries and the occasional build log. Writing things down is how I make sure I actually understood them.</p>
+          <p>Outside of security, I like dark cities, rainy nights and rooftops with a good view.</p>
+          <blockquote class="motto">
+            <p class="hanja" lang="zh"><span>少年易老</span>學難成<br>一寸光陰不可輕</p>
+            <p class="ko">소년이로학난성 &nbsp;일촌광음불가경</p>
+            <p class="en">Youth fades easily, learning is hard won &mdash; do not waste a single inch of time.</p>
+          </blockquote>
+        </div>
       </div>
-
-
-      <!-- Affiliations -->
-      <p class="section-label">03 / AFFILIATIONS & PROGRAMS</p>
-
-      <div class="interest-grid">
-
-        <article class="interest-card">
-          <span>01</span>
-          <h3>WhiteHat School</h3>
-          <p>4th Cohort</p>
-        </article>
-
-        <article class="interest-card">
-          <span>02</span>
-          <h3>Knights Frontier</h3>
-          <p>3rd Cohort</p>
-        </article>
-
-        <article class="interest-card">
-          <span>03</span>
-          <h3>Whois</h3>
-          <p>Cybersecurity Club · Ajou University</p>
-        </article>
-
-      </div>
-
-
-      <!-- Additional Content -->
-      <p class="section-label">04 / MORE</p>
-
-      <h2>More About Me</h2>
-
-      <p class="about-text">
-        추가할 자기소개 내용을 입력하세요.
-      </p>
-
-      <a href="/posts.html" class="text-link">
-        EXPLORE POSTS →
-      </a>
-
     </section>
 
+    <section class="section" id="projects" style="padding-top:0">
+      <div class="section-heading reveal">
+        <p class="eyebrow">02 / Projects</p>
+        <h2>Selected <span>Work</span></h2>
+      </div>
+      <div class="project-grid">
+        <article class="project-card reveal" style="--i:0">
+          <span class="num">01 /</span>
+          <h3>Project Name</h3>
+          <p>One or two lines about what it does, why you built it and what you learned.</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Web</span></div>
+          <a class="text-link" href="https://github.com/" target="_blank" rel="noopener">VIEW ON GITHUB <span aria-hidden="true">&nearr;</span></a>
+        </article>
+        <article class="project-card reveal" style="--i:1">
+          <span class="num">02 /</span>
+          <h3>Project Name</h3>
+          <p>One or two lines about what it does, why you built it and what you learned.</p>
+          <div class="tags"><span class="tag">AWS</span><span class="tag">IaC</span></div>
+          <a class="text-link" href="https://github.com/" target="_blank" rel="noopener">VIEW ON GITHUB <span aria-hidden="true">&nearr;</span></a>
+        </article>
+        <article class="project-card reveal" style="--i:2">
+          <span class="num">03 /</span>
+          <h3>Project Name</h3>
+          <p>One or two lines about what it does, why you built it and what you learned.</p>
+          <div class="tags"><span class="tag">CTF</span><span class="tag">Tooling</span></div>
+          <a class="text-link" href="https://github.com/" target="_blank" rel="noopener">VIEW ON GITHUB <span aria-hidden="true">&nearr;</span></a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="timeline" style="padding-top:0">
+      <div class="section-heading reveal">
+        <p class="eyebrow">03 / Timeline</p>
+        <h2>The <span>Record</span></h2>
+      </div>
+      <div class="timeline">
+        <div class="t-item reveal" style="--i:0"><time>2026</time><div><span class="kind">Milestone</span><h3>Launched TF. Security Archive</h3><p>Started documenting security notes and projects in public.</p></div></div>
+        <div class="t-item reveal" style="--i:1"><time>&mdash;</time><div><span class="kind">Program</span><h3>Knights Frontier &mdash; 3rd cohort</h3><p></p></div></div>
+        <div class="t-item reveal" style="--i:2"><time>&mdash;</time><div><span class="kind">Program</span><h3>WhiteHat School &mdash; 4th cohort</h3><p></p></div></div>
+        <div class="t-item reveal" style="--i:3"><time>&mdash;</time><div><span class="kind">Education</span><h3>Ajou University &mdash; Dept. of Cybersecurity</h3><p></p></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" style="padding-top:0">
+      <div class="section-heading reveal">
+        <p class="eyebrow">04 / Contact</p>
+        <h2>Send a <span>Signal</span></h2>
+      </div>
+      <div class="contact-list">
+        <a class="contact-row reveal" style="--i:0" href="https://github.com/" target="_blank" rel="noopener"><span class="k">GITHUB</span><span class="v">github.com/your-id</span><span class="go">&nearr;</span></a>
+        <a class="contact-row reveal" style="--i:1" href="mailto:you@example.com" target="_blank" rel="noopener"><span class="k">EMAIL</span><span class="v">you@example.com</span><span class="go">&nearr;</span></a>
+        <a class="contact-row reveal" style="--i:2" href="https://www.linkedin.com/" target="_blank" rel="noopener"><span class="k">LINKEDIN</span><span class="v">linkedin.com/in/your-id</span><span class="go">&nearr;</span></a>
+      </div>
+    </section>
   </main>
 
-
-  <footer>
-    <p>TF'S SECURITY ARCHIVE</p>
+  <footer class="site-footer">
+    <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF<span>.</span></a>
+    <p>BUILT FOR LEARNING. DOCUMENTED FOR GROWTH.</p>
+    <span>&copy; 2026 TF</span>
   </footer>
 
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
