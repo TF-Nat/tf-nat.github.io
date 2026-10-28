@@ -37,19 +37,22 @@
 
       <div class="hero-content">
         <p class="eyebrow">TF / Tech Blog &amp; Portfolio</p>
+        <h1 class="sr-only">TF &mdash; tech blog and portfolio</h1>
         <p class="hero-terminal" data-typed='["cybersecurity student @ ajou university","web security / cloud security","documenting every solve."]' aria-label="cybersecurity student at Ajou University"><span class="prompt">tf@archive:~$</span> <span class="out"></span><span class="caret"></span></p>
-        <p class="hero-description">Notes, experiments and write-ups from the dark side of the stack &mdash; collected in one place, kept for the long run.</p>
+        <blockquote class="motto">
+          <p class="hanja" lang="zh"><span class="w">少年易老</span> <span class="w">學難成</span> <span class="w">一寸光陰</span> <span class="w">不可輕</span></p>
+          <p class="ko">소년이로 학난성 일촌광음 불가경</p>
+          <p class="en" lang="ko">소년은 늙기 쉽고 학문은 이루기 어려우니, 한 치의 시간도 가벼이 여기지 말라.</p>
+        </blockquote>
         <div class="hero-actions">
           <a class="button button-primary" href="posts.html">EXPLORE THE BLOG <span aria-hidden="true">&nearr;</span></a>
           <a class="button button-ghost" href="about.html">CASE FILE: ABOUT TF</a>
         </div>
       </div>
 
-      <div class="hero-status"><span class="status-dot"></span> SIGNAL ACTIVE <span class="sep">/</span> INDEPENDENT SECURITY NOTES <span class="sep">/</span> EST. 2026</div>
+      <div class="hero-status"><span class="status-dot"></span> SIGNAL ACTIVE <span class="sep">/</span> EST. 2026</div>
       <a class="scroll-cue" href="#focus" aria-label="Scroll to focus areas">SCROLL <i></i></a>
     </section>
-
-    <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Web Security</span><span>Cloud Security</span><span>CTF / Wargame</span><span>Bug Bounty</span><span>Research</span><span>Tech Docs</span><span>Web Security</span><span>Cloud Security</span><span>CTF / Wargame</span><span>Bug Bounty</span><span>Research</span><span>Tech Docs</span><span>Web Security</span><span>Cloud Security</span><span>CTF / Wargame</span><span>Bug Bounty</span><span>Research</span><span>Tech Docs</span><span>Web Security</span><span>Cloud Security</span><span>CTF / Wargame</span><span>Bug Bounty</span><span>Research</span><span>Tech Docs</span></div></div>
 
     <section class="section" id="focus">
       <div class="section-heading reveal">
@@ -62,40 +65,27 @@
           <span class="focus-num">01 /</span>
           <svg class="focus-icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="17"/><path d="M7 24h34M24 7c-6 5-8 11-8 17s2 12 8 17M24 7c6 5 8 11 8 17s-2 12-8 17"/></svg>
           <h3>Web Security</h3>
-          <p>How the web breaks &mdash; and how to stop it. Auth, injection, access control and everything in between.</p>
           <div class="tags"><span class="tag">XSS</span><span class="tag">SQLi</span><span class="tag">SSRF</span><span class="tag">AuthN/Z</span></div>
         </article>
         <article class="focus-card reveal" style="--i:1">
           <span class="focus-num">02 /</span>
           <svg class="focus-icon" viewBox="0 0 48 48"><path d="M14 35a9 9 0 0 1-1-17.9A11 11 0 0 1 34 15a9 9 0 0 1 1 18z"/><path d="M20 28l4-4 4 4M24 24v10"/></svg>
           <h3>Cloud Security</h3>
-          <p>Identity, network boundaries and misconfiguration in modern cloud and container environments.</p>
-          <div class="tags"><span class="tag">IAM</span><span class="tag">AWS</span><span class="tag">Containers</span><span class="tag">IaC</span></div>
+          <div class="tags"><span class="tag">IAM</span><span class="tag">AWS</span><span class="tag">IaC</span></div>
         </article>
         <article class="focus-card reveal" style="--i:2">
           <span class="focus-num">03 /</span>
           <svg class="focus-icon" viewBox="0 0 48 48"><path d="M12 6v38"/><path d="M12 8h26l-6 8 6 8H12"/></svg>
           <h3>CTF &amp; Wargame</h3>
-          <p>Training grounds. Every solved challenge becomes a note, every failed one becomes a lesson.</p>
           <div class="tags"><span class="tag">Pwn</span><span class="tag">Web</span><span class="tag">Rev</span><span class="tag">Crypto</span></div>
         </article>
         <article class="focus-card reveal" style="--i:3">
           <span class="focus-num">04 /</span>
           <svg class="focus-icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16"/><circle cx="24" cy="24" r="8"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8"/></svg>
           <h3>Bug Bounty</h3>
-          <p>Responsible vulnerability research inside program scope &mdash; reproduce, report, remediate.</p>
-          <div class="tags"><span class="tag">Recon</span><span class="tag">Reports</span><span class="tag">Scope</span><span class="tag">Triage</span></div>
+          <div class="tags"><span class="tag">Recon</span><span class="tag">Reports</span><span class="tag">Scope</span></div>
         </article>
       </div>
-    </section>
-
-    <section class="motto-section reveal" aria-label="Motto">
-      <p class="eyebrow">Motto</p>
-      <blockquote class="motto">
-        <p class="hanja" lang="zh"><span>少年易老</span>學難成<br>一寸光陰不可輕</p>
-        <p class="ko">소년이로학난성 &nbsp;일촌광음불가경</p>
-        <p class="en">Youth fades easily, learning is hard won &mdash; do not waste a single inch of time.</p>
-      </blockquote>
     </section>
 
     <section class="section recent-section" id="recent-posts">
@@ -109,16 +99,10 @@
       <div class="post-list" data-recent></div>
       <noscript><p class="empty">Enable JavaScript to see the latest posts, or visit the <a href="posts.html">blog</a>.</p></noscript>
     </section>
-
-    <section class="cta-band reveal">
-      <h2>Want the <span>full story?</span></h2>
-      <a class="button button-primary" href="about.html">OPEN CASE FILE <span aria-hidden="true">&nearr;</span></a>
-    </section>
   </main>
 
   <footer class="site-footer">
     <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF<span>.</span></a>
-    <p>BUILT FOR LEARNING. DOCUMENTED FOR GROWTH.</p>
     <span>&copy; 2026 TF</span>
   </footer>
 
