@@ -547,3 +547,84 @@ body::after {
 @media (prefers-reduced-motion: reduce) { .scan { display: none; } .hero-media img { animation: none; } }
 
 .hero .motto .en { color: #d3dae6; text-shadow: 0 1px 14px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,.8); }
+
+/* ======== v8: emphasize the TF signal ======== */
+/* drift moves to the wrapper so overlays stay locked to the photo */
+.hero-media-inner > div { animation: drift 40s ease-in-out infinite alternate; }
+.hero-media img { animation: glitch 9s steps(1) infinite; }
+
+/* 1. re-light the letters themselves: same photo, cropped to the TF region, boosted */
+.signal-boost {
+  position: absolute; left: 58%; top: 6%; width: 28%; height: 34%;
+  background: url('../images/tf-city.png') no-repeat;
+  background-size: calc(100% / .28) calc(100% / .34);
+  background-position: calc(.58 / (1 - .28) * 100%) calc(.06 / (1 - .34) * 100%);
+  filter: brightness(2.1) contrast(1.25) saturate(1.3);
+  mix-blend-mode: screen; opacity: .9; pointer-events: none;
+  -webkit-mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+          mask-image: radial-gradient(closest-side, #000 55%, transparent 100%);
+  animation: sigpulse 3.2s ease-in-out infinite;
+}
+@keyframes sigpulse { 0%, 100% { opacity: .65; } 50% { opacity: 1; } 56% { opacity: .5; } 60% { opacity: 1; } }
+
+/* 2. bigger, stronger bloom */
+.signal-glow { left: 72%; top: 21%; width: 46%; background: radial-gradient(closest-side, rgba(var(--accent-rgb), .85), rgba(var(--accent-rgb), .22) 50%, transparent 75%); }
+
+/* 3. radar rings */
+.signal-rings { position: absolute; left: 72.5%; top: 21%; width: 0; height: 0; pointer-events: none; }
+.signal-rings i { position: absolute; left: 0; top: 0; width: calc(var(--w) * .26); aspect-ratio: 1; translate: -50% -50%; border: 1px solid rgba(var(--accent-rgb), .65); border-radius: 50%; opacity: 0; animation: ring 4.5s cubic-bezier(.2,.6,.3,1) infinite; }
+.signal-rings i:nth-child(2) { animation-delay: 1.5s; }
+.signal-rings i:nth-child(3) { animation-delay: 3s; }
+@keyframes ring { 0% { transform: scale(.15); opacity: .8; } 100% { transform: scale(1.7); opacity: 0; } }
+
+/* 4. HUD label under the signal */
+.signal-tag { position: absolute; left: 66%; top: 37%; font-family: var(--mono); font-size: .66rem; letter-spacing: .16em; display: flex; flex-direction: column; gap: .2rem; padding: .55rem .8rem; border-left: 2px solid var(--amber); background: rgba(5,9,15,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); color: #cbd5e3; }
+.signal-tag b { color: var(--amber); font-weight: 500; animation: blink 1.6s steps(1) infinite; }
+@media (max-width: 820px) { .signal-tag { display: none; } }
+@media (prefers-reduced-motion: reduce) { .signal-rings, .signal-boost { animation: none; } .signal-rings i { display: none; } }
+
+/* ---- v9: smaller hanja + Korean gloss ---- */
+.hero .motto .hanja { font-size: clamp(.9rem, 1.3vw, 1.1rem); letter-spacing: .1em; margin-bottom: .6rem; }
+.bio .motto .hanja { font-size: clamp(.9rem, 1.3vw, 1.1rem); }
+.motto .gloss { font-size: .98rem; color: #e6ebf3; margin: 0 0 .15rem; word-break: keep-all; font-weight: 500; }
+.hero .motto .gloss { text-shadow: 0 1px 14px rgba(0,0,0,.95), 0 0 3px rgba(0,0,0,.8); }
+.motto .en { font-size: .82rem; }
+
+/* ---- v10: terminal line matches site typography ---- */
+.hero-terminal { font-family: var(--sans); font-weight: 600; font-size: clamp(1.15rem, 2.2vw, 1.6rem); letter-spacing: -.01em; color: #f1f4f9; }
+.hero-terminal .prompt { color: var(--accent); margin-right: .35rem; }
+.hero-terminal .caret { width: .12em; height: 1em; vertical-align: -.12em; margin-left: 3px; }
+
+/* focus cards: title only */
+.focus-card h3 { margin-bottom: 0; }
+.focus-card { padding-bottom: 2rem; }
+
+/* focus cards: title only */
+.focus-card h3 { margin-bottom: 0; }
+.focus-card { padding-bottom: 2rem; }
+
+/* ---- v11: compact focus + category links ---- */
+.section-heading.compact h2 { font-size: clamp(1.4rem, 2.4vw, 1.9rem); }
+.section-heading.compact { margin-bottom: 1.4rem; }
+.focus-grid { grid-template-columns: repeat(4, 1fr); }
+.focus-card { flex-direction: row; align-items: center; gap: .9rem; min-height: 0; padding: 1.1rem 1.3rem; }
+.focus-card .focus-num { display: none; }
+.focus-card .focus-icon { width: 28px; height: 28px; margin: 0; flex: none; }
+.focus-card h3 { font-size: 1.15rem; margin: 0; letter-spacing: .03em; }
+
+.cat-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.cat-link { position: relative; display: grid; grid-template-columns: auto 1fr auto; grid-template-areas: "n t go" "n k go"; column-gap: 1rem; align-items: center; padding: 1.1rem 1.3rem; background: var(--panel); transition: background .25s; }
+.cat-link:hover { background: var(--panel-2); }
+.cat-link::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: var(--accent); transform: scaleY(0); transition: transform .3s var(--ease); }
+.cat-link:hover::before { transform: scaleY(1); }
+.cat-link .n { grid-area: n; font-family: var(--mono); font-size: .7rem; color: var(--dim); letter-spacing: .14em; }
+.cat-link .t { grid-area: t; font-family: var(--display); text-transform: uppercase; font-weight: 800; font-size: 1.2rem; letter-spacing: .03em; line-height: 1.1; }
+.cat-link .k { grid-area: k; font-family: var(--mono); font-size: .68rem; color: var(--accent); letter-spacing: .04em; }
+.cat-link .go { grid-area: go; font-family: var(--mono); color: var(--dim); transition: color .2s, transform .3s var(--ease); }
+.cat-link:hover .go { color: var(--accent); transform: translate(3px, -3px); }
+@media (max-width: 1080px) { .focus-grid { grid-template-columns: repeat(2, 1fr); } .cat-links { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .focus-grid, .cat-links { grid-template-columns: 1fr; } }
+
+/* tighter rhythm between focus / categories / recent posts */
+#focus { padding-bottom: clamp(40px, 5vw, 70px); }
+#recent-posts { padding-top: clamp(40px, 5vw, 70px); }
