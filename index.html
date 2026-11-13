@@ -10,6 +10,33 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    /* hero: shorter photo, categories on top of it, no frame effects */
+    .hero { min-height: 700px; padding-bottom: 120px; }
+    .hero::after { display: none; }
+    .hero-media-inner { top: calc(50% + 48px); }
+    /* crisp text: no blurry shadows, normal spacing */
+    .hero h1.hero-name, .hero-role, .hero .motto .gloss, .hero .motto .en { text-shadow: none; letter-spacing: 0; word-spacing: normal; }
+    .hero h1.hero-name { letter-spacing: -.01em; }
+    .hero-role { color: #fff; font-size: clamp(.9rem, 1.2vw, 1rem); max-width: 34em; margin-bottom: 1.4rem; }
+    .hero-media img { animation: none; }
+    .hero .motto { margin: 0 0 1.8rem; padding: 0; border: 0; background: none; max-width: 560px; }
+    .hero .motto .gloss { font-size: .92rem; font-weight: 500; line-height: 1.55; margin: 0 0 .15rem; }
+    .hero .motto .en { font-size: .8rem; line-height: 1.5; color: var(--text-2); }
+    .hero-cats { position: absolute; right: var(--gutter); bottom: 40px; width: min(600px, 46vw); padding: 1rem; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; background: rgba(8,13,21,.88); }
+    .hero-cats h2 { font-family: var(--display); text-transform: uppercase; font-size: 1.15rem; letter-spacing: .02em; margin: 0 0 .7rem; }
+    .hero-cats .cat-links { grid-template-columns: repeat(2, 1fr); }
+    .hero-cats .cat-link { padding: .6rem .9rem; background: transparent; }
+    .hero-cats .cat-link:hover { background: var(--panel-2); }
+    .hero-cats .cat-link .t { font-size: .9rem; white-space: nowrap; }
+    .hero-cats .cat-link .k { font-size: .78rem; }
+    @media (max-width: 900px) {
+      .hero { min-height: 0; flex-direction: column; align-items: flex-start; gap: 1.6rem; padding-bottom: 40px; }
+      .hero-cats { position: static; width: 100%; }
+      .hero-cats .cat-links { grid-template-columns: 1fr; }
+      .hero-badges { position: static; }
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -36,13 +63,9 @@
         </div></div>
       </div>
       <canvas id="rain" aria-hidden="true"></canvas>
-      <div class="scan" aria-hidden="true"></div>
-      <div class="hud" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-      <div class="scan" aria-hidden="true"></div>
-      <div class="hud" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 
       <div class="hero-content">
-        <h1 class="hero-name">TF<h1>
+        <h1 class="hero-name">TF</h1>
         <p class="hero-role">Cybersecurity student at Ajou University, focused on web and cloud security.</p>
         <blockquote class="motto">
           <p class="gloss" lang="ko">소년은 늙기 쉽고 학문은 이루기 어려우니, 한 치의 시간도 가벼이 여기지 말라.</p>
@@ -52,6 +75,19 @@
           <a class="button button-primary" href="posts.html">Explore the blog <span aria-hidden="true">&nearr;</span></a>
           <a class="button button-ghost" href="about.html">About me</a>
         </div>
+      </div>
+
+
+      <div class="hero-cats">
+        <h2>Blog Categories</h2>
+        <div class="cat-links">
+        <a class="cat-link " style="--i:0" href="posts.html?cat=dev"><span class="t">Development</span><span class="k">개발</span><span class="go" aria-hidden="true">&nearr;</span></a>
+        <a class="cat-link " style="--i:1" href="posts.html?cat=ctf"><span class="t">CTF / Wargame</span><span class="k">CTF/Wargame</span><span class="go" aria-hidden="true">&nearr;</span></a>
+        <a class="cat-link " style="--i:2" href="posts.html?cat=bounty"><span class="t">Bug Bounty</span><span class="k">Bug Bounty</span><span class="go" aria-hidden="true">&nearr;</span></a>
+        <a class="cat-link " style="--i:3" href="posts.html?cat=notes"><span class="t">Blog / Tech Docs</span><span class="k">블로그/기술문서</span><span class="go" aria-hidden="true">&nearr;</span></a>
+        <a class="cat-link " style="--i:4" href="posts.html?cat=research"><span class="t">Papers / Conferences</span><span class="k">논문/컨퍼런스</span><span class="go" aria-hidden="true">&nearr;</span></a>
+        <a class="cat-link " style="--i:5" href="posts.html?cat=contest"><span class="t">Contests / Certs</span><span class="k">공모전/자격증</span><span class="go" aria-hidden="true">&nearr;</span></a>
+      </div>
       </div>
 
       <div class="hero-badges">
@@ -83,17 +119,6 @@
           <svg class="focus-icon" viewBox="0 0 48 48"><circle cx="24" cy="24" r="16"/><circle cx="24" cy="24" r="8"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8"/></svg>
           <h3>Bug Bounty</h3>
         </article>
-      </div>
-      <div class="section-heading compact reveal" style="margin-top:3.5rem">
-        <h2>Blog Categories</h2>
-      </div>
-      <div class="cat-links">
-        <a class="cat-link reveal" style="--i:0" href="posts.html?cat=dev"><span class="t">Development</span><span class="k">개발</span><span class="go" aria-hidden="true">&nearr;</span></a>
-        <a class="cat-link reveal" style="--i:1" href="posts.html?cat=ctf"><span class="t">CTF / Wargame</span><span class="k">CTF/Wargame</span><span class="go" aria-hidden="true">&nearr;</span></a>
-        <a class="cat-link reveal" style="--i:2" href="posts.html?cat=bounty"><span class="t">Bug Bounty</span><span class="k">Bug Bounty</span><span class="go" aria-hidden="true">&nearr;</span></a>
-        <a class="cat-link reveal" style="--i:3" href="posts.html?cat=notes"><span class="t">Blog / Tech Docs</span><span class="k">블로그/기술문서</span><span class="go" aria-hidden="true">&nearr;</span></a>
-        <a class="cat-link reveal" style="--i:4" href="posts.html?cat=research"><span class="t">Papers / Conferences</span><span class="k">논문/컨퍼런스</span><span class="go" aria-hidden="true">&nearr;</span></a>
-        <a class="cat-link reveal" style="--i:5" href="posts.html?cat=contest"><span class="t">Contests / Certs</span><span class="k">공모전/자격증</span><span class="go" aria-hidden="true">&nearr;</span></a>
       </div>
 
     </section>
