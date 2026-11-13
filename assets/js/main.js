@@ -46,8 +46,6 @@
     hero.addEventListener('pointermove', function (e) {
       var r = hero.getBoundingClientRect();
       var nx = (e.clientX - r.left) / r.width, ny = (e.clientY - r.top) / r.height;
-      hero.style.setProperty('--mx', (nx * 100) + '%');
-      hero.style.setProperty('--my', (ny * 100) + '%');
       tx = (nx - .5) * -16; ty = (ny - .5) * -10;
       if (!raf) raf = requestAnimationFrame(step);
     });
@@ -94,18 +92,4 @@
     draw();
   }
 
-  /* terminal typing line */
-  var term = document.querySelector('[data-typed]');
-  if (term) {
-    var lines = JSON.parse(term.dataset.typed), li = 0, ci = 0, del = false;
-    var out = term.querySelector('.out');
-    if (reduce) { out.textContent = lines[0]; }
-    else (function tick() {
-      var s = lines[li];
-      if (!del) { ci++; out.textContent = s.slice(0, ci); if (ci === s.length) { del = true; return setTimeout(tick, 2200); } return setTimeout(tick, 55 + Math.random() * 45); }
-      ci--; out.textContent = s.slice(0, ci);
-      if (ci === 0) { del = false; li = (li + 1) % lines.length; return setTimeout(tick, 400); }
-      setTimeout(tick, 22);
-    })();
-  }
 })();
