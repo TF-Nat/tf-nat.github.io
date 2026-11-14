@@ -8,8 +8,7 @@
    ========================================================== */
 
 // e.g. 'https://yourblog.tistory.com/rss'  (leave '' to disable)
-var TISTORY_RSS = '';  // auto-sync is off for now. Set to 'https://tf-korea.tistory.com/rss' to turn it on.
-
+var TISTORY_RSS = 'https://tf-korea.tistory.com/rss';  //티스토리랑 연
 var CATEGORIES = [
   { id: 'dev',      label: 'Development',          ko: '개발',            desc: 'Programming, tooling and build logs.' },
   { id: 'ctf',      label: 'CTF / Wargame',        ko: 'CTF/Wargame',     desc: 'Challenge write-ups and solve notes.' },
