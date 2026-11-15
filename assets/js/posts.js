@@ -69,6 +69,20 @@ function tfMapCategory(names) {
   return 'notes';
 }
 
+/* Tistory feeds double-encode text (e.g. "&amp;ndash;"); decode until it is plain text. */
+function tfDecode(str) {
+  var t = document.createElement('textarea'), cur = String(str || '');
+  for (var i = 0; i < 3; i++) { t.innerHTML = cur; if (t.value === cur) break; cur = t.value; }
+  return cur;
+}
+/* rss2json gives UTC; the blog is written in Korea time (UTC+9). */
+function tfKstDate(pub) {
+  var d = new Date(String(pub || '').replace(' ', 'T') + 'Z');
+  if (isNaN(d.getTime())) return String(pub || '').slice(0, 10).replace(/-/g, '.');
+  var k = new Date(d.getTime() + 9 * 3600 * 1000), z = function (n) { return (n < 10 ? '0' : '') + n; };
+  return k.getUTCFullYear() + '.' + z(k.getUTCMonth() + 1) + '.' + z(k.getUTCDate());
+}
+
 function tfLoadTistory() {
   if (!TISTORY_RSS) return Promise.resolve([]);
   var key = 'tf-rss:' + TISTORY_RSS;
@@ -77,10 +91,10 @@ function tfLoadTistory() {
   return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
     if (!j || j.status !== 'ok') return [];
     var v = j.items.map(function (it) {
-      var txt = (it.description || '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+      var txt = tfDecode((it.description || '').replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
       return {
-        external: it.link, cat: tfMapCategory(it.categories), date: (it.pubDate || '').slice(0, 10).replace(/-/g, '.'),
-        title: it.title, summary: txt.length > 120 ? txt.slice(0, 120) + '…' : txt
+        external: it.link, cat: tfMapCategory(it.categories), date: tfKstDate(it.pubDate),
+        title: tfDecode(it.title), summary: txt.length > 120 ? txt.slice(0, 120) + '…' : txt
       };
     });
     try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: v })); } catch (e) {}
