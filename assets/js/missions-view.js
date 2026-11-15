@@ -33,6 +33,11 @@
       var m = items[i] || { title: 'Not started', stars: DEFAULT_STARS, got: 0 };
       var pr = rowsOf(m), rows = Math.max(pr, MINROWS) + EXTRA[i % EXTRA.length], bh = bodyH(rows), x = i * (BW + GAP), y = H - bh;
       var g = '<rect class="bld" x="' + x + '" y="' + y + '" width="' + BW + '" height="' + bh + '"/>';
+      /* facade lattice: the whole wall is a grid of window cells; stars light the cells */
+      var d = '';
+      for (var c = 0; c <= COLS; c++) { var gx = x + PADX - GX / 2 + c * (WW + GX); if (gx > x + 1 && gx < x + BW - 1) d += 'M' + gx + ' ' + (y + 1) + 'V' + (y + bh - 1); }
+      for (var r = 0; r <= rows; r++) { var gy = y + bh - PADB + GY / 2 - r * (WH + GY); if (gy > y + 1 && gy < y + bh - 1) d += 'M' + (x + 1) + ' ' + gy + 'H' + (x + BW - 1); }
+      g += '<path class="grid" d="' + d + '"/>';
       if (i % 3 === 1) g += '<rect class="bld" x="' + (x + BW / 2 - 6) + '" y="' + (y - 12) + '" width="12" height="12"/>';
       for (var s = 0; s < m.stars; s++) {
         var wx = x + PADX + (s % COLS) * (WW + GX), wy = y + bh - PADB - (pr * WH + (pr - 1) * GY) + Math.floor(s / COLS) * (WH + GY);
