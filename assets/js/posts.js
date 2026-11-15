@@ -96,7 +96,7 @@ function tfBody(p) {
 
 /* ---------- markdown posts ---------- */
 function tfParseMd(slug, text) {
-  text = text.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+  text = text.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n').replace(/^\s*(---\n)+(?=[A-Za-z_]+\s*:)/, '---\n');
   var meta = {}, md = text;
   var m = text.match(/^---\n([\s\S]*?)\n---\n?/);
   if (m) {
@@ -108,7 +108,7 @@ function tfParseMd(slug, text) {
   }
   var plain = md.replace(/```[\s\S]*?```/g, ' ').replace(/[#>*`|\-\[\]()!_]/g, ' ').replace(/\s+/g, ' ').trim();
   return {
-    slug: slug, md: md,
+    slug: slug, md: md, tistory: meta.tistory || '',
     cat: meta.cat || 'notes', date: meta.date || '',
     title: meta.title || slug,
     summary: meta.summary || (plain.length > 120 ? plain.slice(0, 120) + '…' : plain)
@@ -119,7 +119,7 @@ function tfLoadMarkdown() {
     return fetch('posts/' + encodeURIComponent(slug) + '.md', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
       .then(function (t) { return tfParseMd(slug, t); })
-      .catch(function () { return null; });
+      .catch(function (e) { if (window.console) console.warn('TF: could not load posts/' + slug + '.md (' + e.message + ')'); return null; });
   })).then(function (list) { return list.filter(Boolean); });
 }
 
@@ -219,13 +219,19 @@ function tfInit(POSTS) {
   }
 }
 
-/* A post that exists on this site hides its Tistory twin (same title). */
+/* A post that exists on this site hides its Tistory twin.
+   Matched by title, or by the optional "tistory: <url>" line in the .md file. */
 function tfKey(t) { return String(t).toLowerCase().replace(/[^0-9a-z\u3131-\uD79D]/g, ''); }
+function tfUrlKey(u) { return String(u).toLowerCase().replace(/^https?:\/\//, '').replace(/[?#].*$/, '').replace(/\/+$/, ''); }
 
-Promise.all([tfLoadMarkdown(), tfLoadTistory()]).then(function (r) {
+function tfWithTimeout(promise, ms) {
+  return Promise.race([promise, new Promise(function (res) { setTimeout(function () { res([]); }, ms); })]);
+}
+
+Promise.all([tfLoadMarkdown(), tfWithTimeout(tfLoadTistory(), 4000)]).then(function (r) {
   var mine = LOCAL_POSTS.concat(r[0]);
-  var seen = {};
-  mine.forEach(function (p) { seen[tfKey(p.title)] = true; });
-  var ext = r[1].filter(function (p) { return !seen[tfKey(p.title)]; });
+  var titles = {}, urls = {};
+  mine.forEach(function (p) { titles[tfKey(p.title)] = true; if (p.tistory) urls[tfUrlKey(p.tistory)] = true; });
+  var ext = r[1].filter(function (p) { return !titles[tfKey(p.title)] && !urls[tfUrlKey(p.external || '')]; });
   tfInit(mine.concat(ext));
 });
