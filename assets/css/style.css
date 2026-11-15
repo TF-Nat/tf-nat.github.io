@@ -627,6 +627,7 @@ body::after {
 .m-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: end; }
 .skyline svg { display: block; width: 100%; height: auto; }
 .bld { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; }
+.grid { fill: none; stroke: var(--line-strong); stroke-width: 1; }
 .win { fill: var(--bg); stroke: var(--line-strong); stroke-width: 1; }
 .win.on { fill: var(--amber); stroke: var(--amber); }
 .ground { stroke: var(--line-strong); stroke-width: 2; }
