@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Knights Frontier mission log: what is done, in progress and still to do.">
+  <meta name="theme-color" content="#05070b">
+  <title>Missions | TF</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='6' fill='%2305070b'/%3E%3Ccircle cx='15' cy='15' r='13' fill='none' stroke='%2386ccff' stroke-width='1.5'/%3E%3Cg fill='%2386ccff'%3E%3Crect x='7' y='10' width='10' height='2.4'/%3E%3Crect x='10.8' y='10' width='2.4' height='11'/%3E%3Crect x='17.6' y='10' width='2.4' height='11'/%3E%3Crect x='17.6' y='10' width='6' height='2.4'/%3E%3Crect x='17.6' y='14.6' width='4.6' height='2.2'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .m-big { margin: 0 0 2.2rem; color: var(--text-2); }
+    .m-big strong { font-family: var(--sans); font-size: clamp(3rem, 8vw, 5rem); font-weight: 800; color: var(--text); letter-spacing: -.02em; }
+    .m-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: end; }
+    .skyline svg { display: block; width: 100%; height: auto; }
+    .bld { fill: var(--bg); stroke: var(--dim); stroke-width: 2; }
+    .win { fill: none; stroke: var(--dim); stroke-width: 1.5; opacity: .55; }
+    .win.on { fill: var(--amber); stroke: var(--amber); opacity: 1; }
+    .ground { stroke: var(--line-strong); stroke-width: 2; }
+    .skyline a:hover .bld, .skyline a:focus-visible .bld, .skyline g:focus-visible .bld { stroke: var(--text); }
+    .skyline g:focus-visible { outline: none; }
+    .m-log { list-style: none; margin: 0; padding: 0; max-height: 360px; overflow-y: auto; border-top: 1px solid var(--line); scrollbar-width: thin; }
+    .m-log li { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; padding: .85rem .2rem; border-bottom: 1px solid var(--line); }
+    .m-log .t { font-weight: 600; color: var(--text); min-width: 0; }
+    .m-log a.t:hover { color: var(--accent); }
+    .m-log .s { white-space: nowrap; font-size: .9rem; letter-spacing: .08em; color: var(--dim); }
+    .m-log .s b { color: var(--amber); font-weight: 400; }
+    .m-log .d { display: block; font-size: .8rem; font-weight: 400; color: var(--muted); }
+    .m-log .none { color: var(--muted); border-bottom: 1px solid var(--line); padding: .85rem .2rem; }
+    @media (max-width: 800px) { .m-grid { grid-template-columns: 1fr; align-items: stretch; } .m-log { max-height: 300px; } }
+  </style>
+</head>
+<body class="inner-page">
+  <header class="site-header">
+    <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF</a>
+    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
+    <div class="header-right">
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="posts.html">Blog</a>
+        <a class="active" href="knights.html">Missions</a>
+        <a href="about.html">About</a>
+        <a href="about.html#contact">Contact</a>
+        <a href="https://tf-korea.tistory.com/" target="_blank" rel="noopener">Tistory &nearr;</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <h1>Missions</h1>
+      <p class="lead" data-program>Knights Frontier.</p>
+    </section>
+
+    <section class="section" style="padding-top:70px">
+      <p class="m-big"><strong data-lit>0</strong><span> stars lit &middot; <span data-done>0</span> of <span data-total>0</span> missions</span></p>
+      <div class="m-grid">
+        <div class="skyline" data-skyline></div>
+        <ol class="m-log" data-log aria-label="Mission log"></ol>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF</a>
+    <span>&copy; 2026 TF</span>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/missions.js"></script>
+  <script>
+  (function () {
+    var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+    var $ = function (q) { return document.querySelector(q); };
+    var DEFAULT_STARS = 3;
+    var items = (window.MISSIONS || []).map(function (m) {
+      var stars = Math.max(1, m.stars || DEFAULT_STARS);
+      var got = m.got != null ? m.got : (m.status === 'done' ? stars : 0);
+      return { title: m.title, date: m.date, link: m.link, stars: stars, got: Math.min(got, stars) };
+    });
+    var total = Math.max(window.MISSIONS_TOTAL || 0, items.length);
+    var lit = items.reduce(function (n, m) { return n + m.got; }, 0);
+    var done = items.filter(function (m) { return m.got >= m.stars; }).length;
+    if (window.MISSIONS_PROGRAM) $('[data-program]').textContent = window.MISSIONS_PROGRAM;
+    $('[data-lit]').textContent = lit; $('[data-done]').textContent = done; $('[data-total]').textContent = total;
+
+    /* skyline: one building per mission, one window per star, lit = earned */
+    var BW = 40, GAP = 10, WS = 11, PITCH = 19, PAD = 9, BASE = 8;
+    var MAXROWS = Math.max(2, Math.max.apply(null, items.map(function (m) { return Math.ceil(m.stars / 2); }).concat([Math.ceil(DEFAULT_STARS / 2)]))), H = MAXROWS * PITCH + 2 * PAD + BASE + 16;
+    var width = Math.max(total, 1) * (BW + GAP) - GAP;
+    var svg = '<svg viewBox="-2 -2 ' + (width + 4) + ' ' + (H + 6) + '" role="img" aria-label="' + lit + ' stars lit, ' + done + ' of ' + total + ' missions completed">';
+    for (var i = 0; i < total; i++) {
+      var m = items[i] || { title: 'Not started', stars: DEFAULT_STARS, got: 0 };
+      var rows = Math.ceil(m.stars / 2), bh = rows * PITCH + 2 * PAD + BASE, x = i * (BW + GAP), y = H - bh;
+      var g = '<rect class="bld" x="' + x + '" y="' + y + '" width="' + BW + '" height="' + bh + '"/>';
+      if (i % 3 === 1) g += '<rect class="bld" x="' + (x + 14) + '" y="' + (y - 14) + '" width="12" height="14"/>';
+      for (var s = 0; s < m.stars; s++) {
+        var wx = x + 7 + (s % 2) * 17, wy = y + PAD + Math.floor(s / 2) * PITCH;
+        g += '<rect class="win' + (s < m.got ? ' on' : '') + '" x="' + wx + '" y="' + wy + '" width="' + WS + '" height="' + WS + '"/>';
+      }
+      var tip = esc(m.title) + ' (' + m.got + '/' + m.stars + ')';
+      svg += (m.link ? '<a href="' + esc(m.link) + '"><title>' + tip + '</title>' + g + '</a>' : '<g tabindex="0"><title>' + tip + '</title>' + g + '</g>');
+    }
+    svg += '<line class="ground" x1="-2" y1="' + H + '" x2="' + (width + 2) + '" y2="' + H + '"/></svg>';
+    var box = $('[data-skyline]'); box.innerHTML = svg; box.style.maxWidth = Math.max(total, 1) * 70 + 'px';
+
+    /* log: newest entry first */
+    var log = $('[data-log]');
+    if (!items.length) { log.innerHTML = '<li class="none">No missions logged yet.</li>'; return; }
+    log.innerHTML = items.slice().reverse().map(function (m) {
+      var name = m.link ? '<a class="t" href="' + esc(m.link) + '">' + esc(m.title) + (m.date ? '<span class="d">' + esc(m.date) + '</span>' : '') + '</a>'
+                        : '<span class="t">' + esc(m.title) + (m.date ? '<span class="d">' + esc(m.date) + '</span>' : '') + '</span>';
+      var stars = '<b>' + new Array(m.got + 1).join('\u2605') + '</b>' + new Array(m.stars - m.got + 1).join('\u2606');
+      return '<li>' + name + '<span class="s" aria-label="' + m.got + ' of ' + m.stars + ' stars">' + stars + '</span></li>';
+    }).join('');
+  })();
+  </script>
+</body>
+</html>
