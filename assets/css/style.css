@@ -619,3 +619,26 @@ body::after {
 .prose th { background: var(--panel-2); font-weight: 700; }
 @media (max-width: 700px) { .prose table { display: block; overflow-x: auto; } .prose table th, .prose table td { min-width: 150px; } }
 .post-head h1 { font-family: var(--sans); text-transform: none; font-weight: 800; letter-spacing: -.02em; line-height: 1.25; font-size: clamp(1.7rem, 3.6vw, 2.6rem); word-break: keep-all; max-width: 22em; }
+
+/* Knights Frontier missions (home section + Missions page) */
+.m-sub { margin: -.4rem 0 1.6rem; color: var(--text-2); }
+.m-big { margin: 0 0 2rem; color: var(--text-2); }
+.m-big strong { font-family: var(--sans); font-size: clamp(3rem, 8vw, 5rem); font-weight: 800; color: var(--text); letter-spacing: -.02em; }
+.m-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: end; }
+.skyline svg { display: block; width: 100%; height: auto; }
+.bld { fill: var(--panel); stroke: var(--dim); stroke-width: 1.5; }
+.win { fill: var(--bg); stroke: var(--line-strong); stroke-width: 1; }
+.win.on { fill: var(--amber); stroke: var(--amber); }
+.ground { stroke: var(--line-strong); stroke-width: 2; }
+.skyline a:hover .bld, .skyline a:focus-visible .bld, .skyline g:focus-visible .bld { stroke: var(--text); }
+.skyline g:focus-visible { outline: none; }
+.m-more { margin: 2.2rem 0 0; }
+.m-log { list-style: none; margin: 0; padding: 0; max-height: 360px; overflow-y: auto; border-top: 1px solid var(--line); scrollbar-width: thin; }
+.m-log li { display: flex; justify-content: space-between; gap: 1rem; align-items: baseline; padding: .85rem .2rem; border-bottom: 1px solid var(--line); }
+.m-log .t { font-weight: 600; color: var(--text); min-width: 0; }
+.m-log a.t:hover { color: var(--accent); }
+.m-log .s { white-space: nowrap; font-size: .9rem; letter-spacing: .08em; color: var(--dim); }
+.m-log .s b { color: var(--amber); font-weight: 400; }
+.m-log .d { display: block; font-size: .8rem; font-weight: 400; color: var(--muted); }
+.m-log .none { color: var(--muted); border-bottom: 1px solid var(--line); padding: .85rem .2rem; }
+@media (max-width: 800px) { .m-grid { grid-template-columns: 1fr; align-items: stretch; } .m-log { max-height: 300px; } }
