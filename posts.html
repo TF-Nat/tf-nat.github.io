@@ -1,64 +1,346 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Browse TF's cybersecurity notes, CTF write-ups, bug bounty reports and research.">
-  <meta name="theme-color" content="#05070b">
-  <title>Blog | TF</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Crect width='30' height='30' rx='6' fill='%2305070b'/%3E%3Ccircle cx='15' cy='15' r='13' fill='none' stroke='%2386ccff' stroke-width='1.5'/%3E%3Cg fill='%2386ccff'%3E%3Crect x='7' y='10' width='10' height='2.4'/%3E%3Crect x='10.8' y='10' width='2.4' height='11'/%3E%3Crect x='17.6' y='10' width='2.4' height='11'/%3E%3Crect x='17.6' y='10' width='6' height='2.4'/%3E%3Crect x='17.6' y='14.6' width='4.6' height='2.2'/%3E%3C/g%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body class="inner-page">
-  <header class="site-header">
-    <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF</a>
-    <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span></button>
-    <div class="header-right">
-      <nav class="nav-links" aria-label="Main navigation">
-        <a class="active" href="posts.html">Blog</a>
-        <a href="about.html">About</a>
-        <a href="about.html#contact">Contact</a>
-        <a href="https://tf-korea.tistory.com/" target="_blank" rel="noopener">Tistory &nearr;</a>
-      </nav>
-    </div>
-  </header>
+/* ==========================================================
+   TF. — blog data + rendering
 
-  <main>
-    <section class="page-hero">
-      <h1>The Blog</h1>
-      <p class="lead">Notes, write-ups and research in six categories. Pick one or search.</p>
-      <p style="margin-top:1.8rem"><a class="button button-primary" href="https://tf-korea.tistory.com/" target="_blank" rel="noopener">Read on Tistory <span aria-hidden="true">&nearr;</span></a></p>
-    </section>
+   POSTS come from two places (merged, newest first):
+     1) Tistory RSS  -> set TISTORY_RSS below. Posts open on Tistory.
+     2) LOCAL_POSTS  -> posts written directly on this site (optional).
+   With neither, the site shows clearly-marked placeholder rows.
+   ========================================================== */
 
-    <section class="section" style="padding-top:70px" data-archive>
-      <div class="section-heading reveal">
-        <h2>Categories</h2>
-      </div>
-      <div class="cat-grid" data-cats></div>
+// e.g. 'https://yourblog.tistory.com/rss'  (leave '' to disable)
+var TISTORY_RSS = 'https://tf-korea.tistory.com/rss';
 
-      <div class="section-heading" style="margin-top:4rem;margin-bottom:1.6rem">
-        <h2>Posts</h2>
-      </div>
-      <div class="toolbar">
-        <button class="chip" data-reset aria-pressed="true">All categories</button>
-        <label class="search">
-          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="9" cy="9" r="6"/><path d="M14 14l4 4"/></svg>
-          <input type="search" placeholder="search posts..." aria-label="Search posts" data-search>
-        </label>
-      </div>
-      <p class="result-count" data-count></p>
-      <div class="post-list" data-list></div>
-    </section>
-  </main>
+var CATEGORIES = [
+  { id: 'dev',      label: 'Development',          ko: '개발',            desc: 'Programming, tooling and build logs.' },
+  { id: 'ctf',      label: 'CTF / Wargame',        ko: 'CTF/Wargame',     desc: 'Challenge write-ups and solve notes.' },
+  { id: 'bounty',   label: 'Bug Bounty',           ko: 'Bug Bounty',      desc: 'Web vulnerability research and reports.' },
+  { id: 'notes',    label: 'Blog / Tech Docs',     ko: '블로그/기술문서',   desc: 'Concepts, guides and technical documentation.' },
+  { id: 'research', label: 'Papers / Conferences', ko: '논문/컨퍼런스',     desc: 'Paper notes and conference takeaways.' },
+  { id: 'contest',  label: 'Contests / Certs',     ko: '공모전/자격증',     desc: 'Competition and certification records.' }
+];
 
-  <footer class="site-footer">
-    <a class="logo" href="index.html" aria-label="TF home"><svg viewBox="0 0 30 30" aria-hidden="true"><circle class="ring" cx="15" cy="15" r="13.5" fill="none" stroke-width="1.5"/><g class="fill"><rect x="7" y="10" width="10" height="2.4"/><rect x="10.8" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="2.4" height="11"/><rect x="17.6" y="10" width="6" height="2.4"/><rect x="17.6" y="14.6" width="4.6" height="2.2"/></g></svg>TF</a>
-    <span>&copy; 2026 TF</span>
-  </footer>
+/* Optional: posts written on this site (opens post.html?slug=...).
+   Example:
+   { slug: 'my-first-post', cat: 'ctf', date: '2026.10.28', title: 'Title', summary: 'One line.', body: '<p>HTML here</p>' }
+*/
+var LOCAL_POSTS = [
+  {
+    slug: 'ecscape-review',
+    cat: 'research',
+    date: '2026.11.15',
+    title: 'Black Hat USA 2025 | ECScape – Amazon ECS에서 IAM 권한 하이재킹 리뷰',
+    summary: 'Black Hat USA 2025 ECScape 발표를 보고, ECS에서 Task 하나가 같은 인스턴스의 다른 Task IAM 권한을 탈취하는 원리와 대응을 정리했다.',
+    body: `<style>
+.prose h3{font-size:1.25rem;margin:2rem 0 .6rem;padding-left:.7rem;border-left:2px solid var(--accent);line-height:1.3}
+.prose table{width:100%;border-collapse:collapse;margin:1.6rem 0;font-size:.92rem}
+.prose th,.prose td{border:1px solid var(--line-strong);padding:.6rem .8rem;text-align:left;vertical-align:top}
+.prose th{background:var(--panel-2)}
+.prose img{max-width:100%;height:auto;margin:1.4rem auto .4rem;border:1px solid var(--line)}
+.prose p>em:only-child{display:block;text-align:center;color:var(--muted);font-size:.85rem;font-style:normal}
+.prose h2{text-transform:none}
+</style>
+<p>Sweet Security의 Naor Haziz가 발표한 ECScape는 EC2 모드로 돌아가는 ECS에서 Task 하나가 뚫리면 같은 인스턴스의 다른 Task 권한까지 탈취될 수 있다는 내용이다. 발표 첫머리에서 오케스트레이션 기술을 쓰는 개발자의 33%가 ECS를 쓴다는 설문을 소개했는데, 그만큼 실제 운영 환경과 가까운 이야기다.</p>
+<p>이 글은 발표의 핵심인 공격 원리를 중심으로 정리하고, 영상을 보며 느낀 점을 덧붙였다.</p>
+<ul>
+<li>영상: https://www.youtube.com/watch?v=UV-hS-DTeik</li>
+<li>발표 슬라이드: https://i.blackhat.com/BH-USA-25/Presentations/US-25-Haziz-ECS-cape-Hijacking-IAM-Privileges-in-Amazon-ECS-Wednesday.pdf</li>
+</ul>
+<h2 id="기술적-배경">1. 기술적 배경</h2>
+<p>발표자는 개념을 한 줄로 짚고 넘어간다. 나는 이를 더 줄여서 정리했다.</p>
+<ul>
+<li>Task Role: Task 안의 컨테이너가 AWS 서비스를 쓸 때 가지는 권한</li>
+<li>Task Execution Role: ECS가 이미지를 pull하거나 시크릿을 가져올 때 쓰는 권한. Task 자체는 접근할 수 없는 것이 원래 전제다.</li>
+<li>Instance Role: EC2 인스턴스 자체의 권한. ECS Agent가 사용한다.</li>
+<li>ECS Agent: 인스턴스에서 AWS Control Plane과 통신하며 “이 Task 시작해, 저건 중지해” 같은 지시를 받는다.</li>
+<li>IMDS: 인스턴스 메타데이터 서비스. Instance Role의 자격증명도 여기서 얻는다. ECS에서는 기본으로 켜져 있고 Task도 접근할 수 있다.</li>
+</ul>
+<p>AWS 문서도 컨테이너는 다른 Task의 자격증명에 접근할 수 없다고 설명한다. 이 글은 그 전제가 깨진다는 이야기다.</p>
+<p>ECS가 동작하려면 Instance Role에 아래 권한이 필요하다. 이 중 ecs:DiscoverPollEndpoint와 ecs:Poll이 ECScape에 쓰인다.</p>
+<p><img src="assets/images/instance-role-slide.png" alt="ECS 기본 Instance Role의 권한" /></p>
+<p><em>ECS 기본 Instance Role의 권한 (출처: Black Hat USA 2025, Naor Haziz)</em></p>
+<h2 id="story-time-고작-3일">2. Story Time: 고작 3일</h2>
+<p>시작은 평범했다. 직장 동료가 “ECS Task 모니터링 가능해?”라고 물었고, 발표자는 “해보지 뭐” 하고 모니터링 센서에 ECS 지원을 붙이기 시작했다.</p>
+<ol type="1">
+<li>Docker 컨테이너 라벨에 필요한 정보가 거의 다 있었지만 ECS 서비스 이름만 없었다.</li>
+<li>검색해 보니 ECS Agent가 Task에 노출하는 Task Metadata Endpoint v4가 서비스 이름을 알려 줬다.</li>
+<li>그런데 Instance Role에는 서비스를 조회하는 ecs:List 계열 권한이 없었다. 그러면 ECS Agent는 이 정보를 어떻게 알아냈을까?</li>
+<li>프록시를 띄워 Agent의 통신을 들여다보니, Agent는 웹소켓으로 ECS에 연결하면서 sendCredentials=true라는 쿼리 파라미터를 쓰고 있었다. 그 웹소켓 위로 실제 Task 자격증명이 오가고 있었다.</li>
+<li>“내가 Agent인 척하면 이 자격증명도 얻을 수 있지 않을까?”</li>
+</ol>
+<p>매니저에게 보여 줬더니 “3일 줄 테니 해봐”라는 답이 돌아왔고, 거기서 연구가 시작되었다.</p>
+<h2 id="ecscape-공격-흐름">3. ECScape: 공격 흐름</h2>
+<p>먼저 진짜 ECS Agent가 Control Plane에 접속하는 과정을 보자.</p>
+<ol type="1">
+<li>RegisterContainerInstance로 자신을 Container Instance로 등록하고 Container Instance ARN을 받는다.</li>
+<li>DiscoverPollEndpoint로 접속할 주소(poll endpoint URL)를 받는다.</li>
+<li>그 주소에 여러 식별자를 쿼리 파라미터로 붙여 ACS 웹소켓 요청을 만든다. ACS(Agent Communication Service)는 문서화되지 않은 AWS 내부 프로토콜이다.</li>
+<li>Control Plane은 이 요청자가 ecs:Poll 권한이 있는지만 확인한다.</li>
+<li>통과하면 같은 인스턴스에서 도는 모든 Task와 Task Execution Role의 자격증명을 웹소켓으로 보내 준다.</li>
+</ol>
+<p>그럼 Task가 Agent인 척할 수 있을까? 발표자는 막힐 때마다 우회로를 찾았다.</p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>필요한 것</th>
+<th>문제</th>
+<th>해결</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DiscoverPollEndpoint 권한</td>
+<td>Task에는 없다</td>
+<td>IMDS로 Instance Role 자격증명을 얻어 Agent와 같은 권한을 확보</td>
+</tr>
+<tr class="even">
+<td>웹소켓 요청에 필요한 식별자들</td>
+<td>흩어져 있다</td>
+<td>대부분 IMDS와 Task Metadata v4에서 획득</td>
+</tr>
+<tr class="odd">
+<td>Container Instance ARN</td>
+<td>조회 권한이 없다. 직접 등록하면 ECS가 깨지고, 호스트 파일시스템을 마운트하는 방법은 흔한 설정이 아니다</td>
+<td>Container Introspection API가 알려 준다</td>
+</tr>
+</tbody>
+</table>
+<p>최종 흐름은 이렇다.</p>
+<pre><code>IMDS → Instance Role 자격증명 획득
+ → DiscoverPollEndpoint → poll endpoint URL
+ → 식별자 조합 (IMDS + Task Metadata v4 + Introspection API)
+ → ACS 웹소켓 접속
+ → 같은 인스턴스 모든 Task / Task Execution Role 자격증명 수신</code></pre>
+<p><img src="assets/images/ecscape.png" alt="ECScape 공격 흐름" /></p>
+<p><em>발표 내용을 바탕으로 직접 재구성한 도식. 정확한 원본은 발표 슬라이드 참고.</em></p>
+<p>받은 자격증명은 AWS가 이미 대신 assume해 준 값이라 AssumeRole을 따로 호출할 필요가 없다. CloudTrail에서도 assume한 주체가 ECS 자신으로 보인다.</p>
+<h2 id="impact와-demo">4. Impact와 Demo</h2>
+<p>영향은 네 가지다.</p>
+<ul>
+<li>Task 간 IAM Role 탈취: 권한 낮은 Task 하나만 뚫려도 같은 인스턴스의 높은 권한 Task 자격증명을 얻는다.</li>
+<li>Task Execution Role 악용: ECS 전용이라 생각해서 권한을 넉넉히 주는 경우가 많은데, 이를 탈취하면 Secrets Manager의 시크릿 같은 것을 직접 읽을 수 있다.</li>
+<li>멀티테넌트의 테넌트 탈출: 한 클러스터와 인스턴스를 나눠 쓰는 테넌트들이 IAM과 Task 분리만 믿고 있다가 경계가 무너진다.</li>
+<li>ECS 내부 정보 노출: 내부 프로토콜을 구현하므로 클러스터에 관한 메타데이터까지 볼 수 있다.</li>
+</ul>
+<p>여기에 설정 오류도 필요 없다. IMDS 기본 활성화와 Instance Role 권한은 ECS의 기본 구성이기 때문이다.</p>
+<p>데모는 두 가지였다.</p>
+<ul>
+<li>Task Role 탈취: Deny * 권한의 Task에서 S3 버킷을 삭제하면 AccessDenied가 난다. 그런데 ECScape 도구(Rust로 작성, GitHub 공개)를 실행하면 같은 인스턴스의 S3 Task 권한으로 삭제가 성공한다.</li>
+<li>Task Execution Role 탈취: DB Task의 Execution Role로 Secrets Manager의 시크릿을 읽는다. 직접 읽으면 AccessDenied지만 도구 실행 후에는 평문 값이 출력된다.</li>
+</ul>
+<p>발표자는 CloudTrail 로그까지 확인해서 보여 줬다.</p>
+<ul>
+<li>DiscoverPollEndpoint 호출은 정상 인스턴스 ID와 Instance Role로 기록되어 진짜 Agent의 호출과 똑같다.</li>
+<li>버킷 삭제 같은 행위는 공격 Task가 아니라 원래 그 권한을 가진 Task가 한 것처럼 남는다.</li>
+<li>공격자 컨테이너의 흔적이 보이지 않는다.</li>
+</ul>
+<h2 id="mitigation">5. Mitigation</h2>
+<p>공격에는 IMDS로 Instance Role을 얻는 단계와 Poll 권한이 필요하므로, 이 둘을 끊는 방향으로 정리하면 된다.</p>
+<ol type="1">
+<li>Task의 IMDS 접근 차단: 가장 먼저 할 일이다. 인스턴스 전체에서 IMDS를 끄면 ECS Agent도 IMDS를 쓰기 때문에 ECS가 깨진다. 그래서 Task 단위로 막아야 하고, AWS 문서에는 iptables 규칙으로 하는 방법이 있다.</li>
+<li>Task Role에 ecs:Poll과 ecs:DiscoverPollEndpoint를 부여하지 않는다. 이 권한이 있으면 IMDS 없이도 Agent를 사칭할 수 있다. ecs:* 와일드카드도 이 두 권한과 또 다른 내부 권한을 포함하므로 쓰지 않고, 필요한 권한만 준다.</li>
+<li>Task Execution Role도 최소 권한으로 준다. “ECS 전용이니 괜찮다”며 모든 Task가 공통 Role을 쓰는 경우가 있는데, ECScape로는 이 Role도 탈취할 수 있다.</li>
+<li>고권한 워크로드와 저권한 워크로드를 같은 인스턴스에서 돌리지 않는다. Capacity Provider 설정이나 클러스터 분리로 나눌 수 있다. 멀티테넌트라면 테넌트마다 클러스터를 나누거나 최소한 EC2 인스턴스는 분리한다.</li>
+</ol>
+<h2 id="aws의-응답과-qa">6. AWS의 응답과 Q&amp;A</h2>
+<p>발표자가 AWS에 제보했을 때 AWS는 이를 AWS에 보안 문제가 되는 사안이 아니라고 답했다. Agent는 고객의 보안 경계 안에서 동작하고, 컨테이너는 보안 경계가 아니며, 인스턴스 레벨 자격증명은 고객이 막지 않는 한 접근할 수 있다는 입장이다. 대신 문서의 표현이 “컨테이너는 다른 Task의 자격증명에 접근할 수 없다”에서 “같은 인스턴스의 Task는 다른 Task의 자격증명에 접근할 수 있다”는 취지로 수정되었고, 발표자는 AWS 보안 블로그에 감사 인사가 올라갔다고 소개했다.</p>
+<p>Q&amp;A에서는 두 가지가 기억에 남는다.</p>
+<ul>
+<li>IMDSv2를 쓰면 영향이 있느냐는 질문에, 발표자는 Task도 같은 인스턴스에서 토큰을 받아 쓰면 되므로 본질적으로 영향이 없다고 답했다. hop limit 설정이 컨테이너에는 영향을 줄 수도 있겠지만, ECS Agent가 v2를 지원하는지는 확신하지 못한다고 했다.</li>
+<li>AWS가 고객에게 iptables 규칙을 직접 짜라고 하는 게 말이 되느냐는 질문에, 발표자는 AWS의 공식 입장이 고객 책임이라고 답하면서 이 모범 사례를 적용하는 것이 유일한 방어라고 했다. AWS가 추후 방어 변경을 고려하고 있다고는 했지만 확정은 아니다.</li>
+</ul>
+<h2 id="느낀-점">7. 느낀 점</h2>
+<h3 id="정상-agent와-구분이-안-되어-심각해-보였고-aws의-입장은-모호했다">정상 Agent와 구분이 안 되어 심각해 보였고, AWS의 입장은 모호했다</h3>
+<p>공격 요청이 진짜 ECS Agent의 호출과 똑같이 기록되고, 탈취한 자격증명으로 한 행위도 원래 Task가 한 것처럼 남는다. 이미 침해된 Task가 있어야 하지만 기본 설정에서 성립하고 사후에 찾기도 어렵다는 점에서 심각하게 느껴졌다. 그런데 AWS는 문제가 아니라고 하면서 문서는 고쳤다. 입장이 분명하지 않다고 느꼈고, 결국 사용자가 iptables까지 직접 설정해서 막아야 하는 구조라는 점도 아쉬웠다.</p>
+<h3 id="설명을-한-줄로-해내는-능력이-대단했다">설명을 한 줄로 해내는 능력이 대단했다</h3>
+<p>발표자는 각 서비스를 한 문장으로 정의하며 넘어갔다. Service는 “이 Task를 계속 띄워 둬”, ECS Agent는 “AWS Control Plane과 인스턴스를 잇는 다리”라는 식으로 군더더기가 없었다. 어떤 서비스를 깊이 이해해야만 한 줄로 설명할 수 있다는 것을 느꼈고, 그래서 설명하는 능력이 중요한 것 같다.</p>
+<h3 id="막힐-때마다-새-아이디어로-나아가는-과정이-흥미로웠다">막힐 때마다 새 아이디어로 나아가는 과정이 흥미로웠다</h3>
+<p>권한이 없으면 IMDS로, ARN이 없으면 Introspection API로 이어졌다. 왜 막혔는지를 정확히 알고 있었기 때문에 우회로를 떠올릴 수 있었던 것 같다.</p>
+<h3 id="cloudtrail-로그까지-검증한-점이-좋았다">CloudTrail 로그까지 검증한 점이 좋았다</h3>
+<p>취약점을 보여 주는 데서 그치지 않고, 공격이 CloudTrail에 어떻게 남는지까지 확인했다. 덕분에 “탐지가 어렵다”는 주장이 말뿐이 아니라 근거가 있는 이야기가 됐다.</p>
+<h3 id="익스플로잇-과정을-영상으로-보여-준-점이-좋았다">익스플로잇 과정을 영상으로 보여 준 점이 좋았다</h3>
+<p>데모를 영상으로 준비해서 S3 버킷이 실제로 삭제되고 시크릿이 출력되는 과정을 끊김 없이 보여 줬다. 설명만 들을 때보다 정말 되는구나 하고 바로 와닿았다.</p>
+<h3 id="qa의-imdsv2-질문이-좋았다">Q&amp;A의 IMDSv2 질문이 좋았다</h3>
+<p>방어책으로 알려진 IMDSv2가 이 공격에도 통하는지를 짚은 질문이라고 생각한다. 질문자가 발표를 정확히 이해하고 있었다는 느낌이 들었다.</p>
+<h2 id="궁금했던-점-cve는-받을-수-없을까">8. 궁금했던 점: CVE는 받을 수 없을까?</h2>
+<p>발표에서는 CVE가 아니라 AWS의 감사 인사와 문서 변경이라는 형태로 크레딧을 받은 것 같아서 따로 찾아봤다. AWS도 CNA(CVE 발급 기관)라서 고객에게 공개된 AWS 서비스의 유효한 취약점에는 CVE를 발급한다. 다만 취약점이 아니라고 판단한 이슈는 대상에서 제외하는데, 이 건은 AWS가 공동 책임 모델의 문제로 보았으니 같은 맥락일 것 같다. 실제로 CVE가 발급되었는지는 확인하지 못했다.</p>
+<h2 id="마무리">마무리</h2>
+<p>ECScape가 말하는 것은 결국 하나다. Task끼리 권한이 격리된다는 믿음은 ECS의 기본 설정에서는 성립하지 않는다. 취약점 자체도 흥미로웠지만, 막힌 지점마다 이유를 파악하고 우회로를 찾아가는 과정이 가장 오래 기억에 남았다.</p>
+<p>내가 ECS를 쓴다면 점검할 것도 정리됐다. Task의 IMDS 접근이 막혀 있는지, Task Role에 ecs:*가 들어 있지 않은지, 고권한 Task와 저권한 Task가 같은 인스턴스에 있지 않은지다.</p>
+<h2 id="참고">참고</h2>
+<ul>
+<li>영상: https://www.youtube.com/watch?v=UV-hS-DTeik</li>
+<li>발표 슬라이드: https://i.blackhat.com/BH-USA-25/Presentations/US-25-Haziz-ECS-cape-Hijacking-IAM-Privileges-in-Amazon-ECS-Wednesday.pdf</li>
+<li>발표자 블로그(Sweet Security): https://www.sweet.security/blog/ecscape-understanding-iam-privilege-boundaries-in-amazon-ecs</li>
+<li>AWS 보안 블로그: https://aws.amazon.com/blogs/security/security-considerations-for-running-containers-on-amazon-ecs/</li>
+<li>AWS 취약점 신고 정책(CVE 범위): https://aws.amazon.com/security/vulnerability-reporting</li>
+</ul>`
+  }
+];
 
-  <script src="assets/js/main.js"></script>
-  <script src="assets/js/posts.js"></script>
-</body>
-</html>
+/* ---------- helpers ---------- */
+function tfCat(id) { return CATEGORIES.filter(function (c) { return c.id === id; })[0] || { label: id, ko: '' }; }
+function tfEsc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+/* Your Tistory category  ->  one of the six site categories.
+   Edit the left side to match your Tistory category names. */
+var TISTORY_CATEGORY_MAP = {
+  'web': 'notes', 'web3': 'notes', 'cloud': 'notes', 'network': 'notes', 'etc': 'notes',
+  'wargame': 'ctf',
+  'programming': 'dev'
+};
+
+/* map a Tistory category name onto one of our six */
+function tfMapCategory(names) {
+  var list = names || [];
+  for (var k = 0; k < list.length; k++) {
+    // Tistory may report nested names like "Web/XSS": check each part
+    var parts = String(list[k]).toLowerCase().split('/');
+    for (var m = 0; m < parts.length; m++) {
+      var hit = TISTORY_CATEGORY_MAP[parts[m].trim()];
+      if (hit) return hit;
+    }
+  }
+  var hay = list.join(' ').toLowerCase();
+  for (var i = 0; i < CATEGORIES.length; i++) {
+    var c = CATEGORIES[i];
+    var keys = [c.id, c.label, c.ko].map(function (k) { return k.toLowerCase(); });
+    for (var j = 0; j < keys.length; j++) if (keys[j] && hay.indexOf(keys[j]) > -1) return c.id;
+  }
+  if (/ctf|wargame|워게임/.test(hay)) return 'ctf';
+  if (/bounty|버그/.test(hay)) return 'bounty';
+  if (/논문|컨퍼런스|paper/.test(hay)) return 'research';
+  if (/공모전|자격증|cert/.test(hay)) return 'contest';
+  if (/개발|dev/.test(hay)) return 'dev';
+  return 'notes';
+}
+
+function tfLoadTistory() {
+  if (!TISTORY_RSS) return Promise.resolve([]);
+  var key = 'tf-rss:' + TISTORY_RSS;
+  try { var c = JSON.parse(sessionStorage.getItem(key)); if (c && Date.now() - c.t < 600000) return Promise.resolve(c.v); } catch (e) {}
+  var url = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(TISTORY_RSS);
+  return fetch(url).then(function (r) { return r.json(); }).then(function (j) {
+    if (!j || j.status !== 'ok') return [];
+    var v = j.items.map(function (it) {
+      var txt = (it.description || '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+      return {
+        external: it.link, cat: tfMapCategory(it.categories), date: (it.pubDate || '').slice(0, 10).replace(/-/g, '.'),
+        title: it.title, summary: txt.length > 120 ? txt.slice(0, 120) + '…' : txt
+      };
+    });
+    try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: v })); } catch (e) {}
+    return v;
+  }).catch(function () { return []; });
+}
+
+function tfPostCard(p, i) {
+  var href = p.external ? p.external : 'post.html?slug=' + encodeURIComponent(p.slug);
+  var ext = p.external ? ' target="_blank" rel="noopener"' : '';
+  return '<article class="post-card reveal" style="--i:' + (i || 0) + '">' +
+    '<div class="post-meta"><span>' + p.date + '</span><span class="cat">' + tfEsc(tfCat(p.cat).label) + '</span><span class="cat">' + (p.external ? 'TISTORY &nearr;' : 'GITHUB') + '</span></div>' +
+    '<div><h3>' + tfEsc(p.title) + '</h3><p>' + tfEsc(p.summary) + '</p></div>' +
+    '<span class="arrow" aria-hidden="true">&nearr;</span>' +
+    '<a class="stretch" href="' + href + '"' + ext + ' aria-label="Read: ' + tfEsc(p.title) + '"></a></article>';
+}
+function tfPlaceholders(n) {
+  var out = '';
+  for (var i = 0; i < n; i++) {
+    out += '<article class="post-card is-placeholder reveal" style="--i:' + i + '"><div class="post-meta"><span>YYYY.MM.DD</span><span class="cat">CATEGORY</span></div>' +
+      '<div><h3>Your next post goes here</h3><p>Full posts live on the Tistory blog for now.</p></div><span class="arrow" aria-hidden="true">&middot;</span></article>';
+  }
+  return out;
+}
+
+function tfInit(POSTS) {
+  POSTS.sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+
+  /* home: latest 3 */
+  var recent = document.querySelector('[data-recent]');
+  if (recent) {
+    recent.innerHTML = POSTS.length ? POSTS.slice(0, 3).map(tfPostCard).join('') : tfPlaceholders(3);
+    window.tfReveal && window.tfReveal(recent);
+  }
+
+  /* archive */
+  var archive = document.querySelector('[data-archive]');
+  if (archive) {
+    var grid = document.querySelector('[data-cats]');
+    var list = archive.querySelector('[data-list]');
+    var count = document.querySelector('[data-count]');
+    var input = document.querySelector('[data-search]');
+    var resetBtn = document.querySelector('[data-reset]');
+    var state = { cat: new URLSearchParams(location.search).get('cat') || 'all', q: '' };
+    if (state.cat !== 'all' && !CATEGORIES.some(function (c) { return c.id === state.cat; })) state.cat = 'all';
+
+    grid.innerHTML = CATEGORIES.map(function (c, i) {
+      var n = POSTS.filter(function (p) { return p.cat === c.id; }).length;
+      return '<button class="cat-card reveal" style="--i:' + i + '" data-cat="' + c.id + '" aria-pressed="false">' +
+        '<div class="top"><span>' + String(i + 1).padStart(2, '0') + '</span><span class="count">' + String(n).padStart(2, '0') + ' POSTS</span></div>' +
+        '<h3>' + tfEsc(c.label) + '</h3><span class="ko">' + tfEsc(c.ko) + '</span><p>' + tfEsc(c.desc) + '</p></button>';
+    }).join('');
+
+    function render() {
+      var q = state.q.trim().toLowerCase();
+      var items = POSTS.filter(function (p) {
+        return (state.cat === 'all' || p.cat === state.cat) &&
+          (!q || (p.title + ' ' + p.summary + ' ' + tfCat(p.cat).label).toLowerCase().indexOf(q) > -1);
+      });
+      if (!POSTS.length) list.innerHTML = tfPlaceholders(3);
+      else list.innerHTML = items.length ? items.map(tfPostCard).join('') : '<p class="empty">// no entries match this filter.</p>';
+      count.textContent = POSTS.length ? items.length + ' / ' + POSTS.length + ' ENTRIES' + (state.cat !== 'all' ? ' · ' + tfCat(state.cat).label.toUpperCase() : '') : 'NO ENTRIES YET';
+      grid.querySelectorAll('.cat-card').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.cat === state.cat)); });
+      resetBtn.setAttribute('aria-pressed', String(state.cat === 'all'));
+      window.tfReveal && window.tfReveal(list);
+    }
+    function setCat(c) {
+      state.cat = c;
+      try { history.replaceState(null, '', c === 'all' ? location.pathname : '?cat=' + c); } catch (e) {}
+      render();
+    }
+    grid.addEventListener('click', function (e) {
+      var b = e.target.closest('.cat-card'); if (!b) return;
+      setCat(state.cat === b.dataset.cat ? 'all' : b.dataset.cat);
+    });
+    resetBtn.addEventListener('click', function () { setCat('all'); });
+    input.addEventListener('input', function () { state.q = input.value; render(); });
+    render();
+    window.tfReveal && window.tfReveal(grid);
+  }
+
+  /* detail page (local posts only) */
+  var detail = document.querySelector('[data-post]');
+  if (detail) {
+    var local = POSTS.filter(function (p) { return !p.external; });
+    var slug = new URLSearchParams(location.search).get('slug');
+    var idx = -1;
+    local.forEach(function (p, i) { if (p.slug === slug) idx = i; });
+    if (idx < 0) {
+      detail.innerHTML = '<div class="post-head"><a class="back" href="posts.html">&larr; BACK TO BLOG</a><p class="eyebrow">404 / NOT FOUND</p><h1>Entry not found</h1></div><div class="prose"><p>That post does not exist. Head back to the <a href="posts.html">blog</a>.</p></div>';
+    } else {
+      var p = local[idx], prev = local[idx + 1], next = local[idx - 1];
+      document.title = p.title + ' | TF.';
+      detail.innerHTML =
+        '<header class="post-head"><a class="back" href="posts.html">&larr; BACK TO BLOG</a>' +
+        '<p class="eyebrow">' + tfEsc(tfCat(p.cat).label) + '</p>' +
+        '<h1>' + tfEsc(p.title) + '</h1>' +
+        '<div class="post-meta" style="margin-top:1.6rem"><span>' + p.date + '</span></div></header>' +
+        '<article class="prose">' + p.body + '</article>' +
+        '<nav class="post-nav" aria-label="Post navigation">' +
+        (prev ? '<a href="post.html?slug=' + prev.slug + '"><small>&larr; OLDER</small>' + tfEsc(prev.title) + '</a>' : '<span></span>') +
+        (next ? '<a class="next" href="post.html?slug=' + next.slug + '"><small>NEWER &rarr;</small>' + tfEsc(next.title) + '</a>' : '<span></span>') +
+        '</nav>';
+    }
+  }
+}
+
+function tfNorm(s) { return String(s).toLowerCase().replace(/[^0-9a-z\u3131-\u318e\uac00-\ud7a3]/g, ''); }
+tfLoadTistory().then(function (ext) {
+  var localTitles = LOCAL_POSTS.map(function (p) { return tfNorm(p.title); });
+  ext = ext.filter(function (e) { return localTitles.indexOf(tfNorm(e.title)) === -1; });
+  tfInit(LOCAL_POSTS.concat(ext));
+});
