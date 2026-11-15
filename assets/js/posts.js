@@ -1,14 +1,15 @@
 /* ==========================================================
-   TF. — blog data + rendering
+   TF. blog data and rendering
 
-   POSTS come from two places (merged, newest first):
-     1) Tistory RSS  -> set TISTORY_RSS below. Posts open on Tistory.
-     2) LOCAL_POSTS  -> posts written directly on this site (optional).
-   With neither, the site shows clearly-marked placeholder rows.
+   Posts come from three places (merged, newest first):
+     1) MD_POSTS     posts/<name>.md  (write in Markdown; main way)
+     2) LOCAL_POSTS  posts written as HTML right here (optional)
+     3) TISTORY_RSS  Tistory feed (off by default; opens on Tistory)
    ========================================================== */
 
 // e.g. 'https://yourblog.tistory.com/rss'  (leave '' to disable)
-var TISTORY_RSS = 'https://tf-korea.tistory.com/rss';  //티스토리랑 연
+var TISTORY_RSS = 'https://tf-korea.tistory.com/rss';  // set '' to turn Tistory sync off
+
 var CATEGORIES = [
   { id: 'dev',      label: 'Development',          ko: '개발',            desc: 'Programming, tooling and build logs.' },
   { id: 'ctf',      label: 'CTF / Wargame',        ko: 'CTF/Wargame',     desc: 'Challenge write-ups and solve notes.' },
@@ -23,6 +24,13 @@ var CATEGORIES = [
    { slug: 'my-first-post', cat: 'ctf', date: '2026.10.28', title: 'Title', summary: 'One line.', body: '<p>HTML here</p>' }
 */
 var LOCAL_POSTS = [];
+
+/* Markdown posts: one file per post in the posts/ folder.
+   Add the file name (without .md) to this list, newest first or any order.
+   Start from posts/_template.md. */
+var MD_POSTS = [
+  'blackhat-2025-ecscape'
+];
 
 /* ---------- helpers ---------- */
 function tfCat(id) { return CATEGORIES.filter(function (c) { return c.id === id; })[0] || { label: id, ko: '' }; }
@@ -80,6 +88,41 @@ function tfLoadTistory() {
   }).catch(function () { return []; });
 }
 
+function tfBody(p) {
+  if (p.md == null) return p.body || '';
+  if (window.marked) return window.marked.parse(p.md);
+  return '<pre><code>' + tfEsc(p.md) + '</code></pre>';
+}
+
+/* ---------- markdown posts ---------- */
+function tfParseMd(slug, text) {
+  text = text.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+  var meta = {}, md = text;
+  var m = text.match(/^---\n([\s\S]*?)\n---\n?/);
+  if (m) {
+    md = text.slice(m[0].length);
+    m[1].split('\n').forEach(function (line) {
+      var k = line.match(/^([A-Za-z_]+)\s*:\s*(.*)$/);
+      if (k) meta[k[1].toLowerCase()] = k[2].trim();
+    });
+  }
+  var plain = md.replace(/```[\s\S]*?```/g, ' ').replace(/[#>*`|\-\[\]()!_]/g, ' ').replace(/\s+/g, ' ').trim();
+  return {
+    slug: slug, md: md,
+    cat: meta.cat || 'notes', date: meta.date || '',
+    title: meta.title || slug,
+    summary: meta.summary || (plain.length > 120 ? plain.slice(0, 120) + '…' : plain)
+  };
+}
+function tfLoadMarkdown() {
+  return Promise.all(MD_POSTS.map(function (slug) {
+    return fetch('posts/' + encodeURIComponent(slug) + '.md', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(function (t) { return tfParseMd(slug, t); })
+      .catch(function () { return null; });
+  })).then(function (list) { return list.filter(Boolean); });
+}
+
 function tfPostCard(p, i) {
   var href = p.external ? p.external : 'post.html?slug=' + encodeURIComponent(p.slug);
   var ext = p.external ? ' target="_blank" rel="noopener"' : '';
@@ -89,13 +132,8 @@ function tfPostCard(p, i) {
     '<span class="arrow" aria-hidden="true">&nearr;</span>' +
     '<a class="stretch" href="' + href + '"' + ext + ' aria-label="Read: ' + tfEsc(p.title) + '"></a></article>';
 }
-function tfPlaceholders(n) {
-  var out = '';
-  for (var i = 0; i < n; i++) {
-    out += '<article class="post-card is-placeholder reveal" style="--i:' + i + '"><div class="post-meta"><span>YYYY.MM.DD</span><span class="cat">CATEGORY</span></div>' +
-      '<div><h3>Your next post goes here</h3><p>Full posts live on the Tistory blog for now.</p></div><span class="arrow" aria-hidden="true">&middot;</span></article>';
-  }
-  return out;
+function tfPlaceholders() {
+  return '<p class="empty-note reveal">Posts are on the Tistory blog for now. <a href="https://tf-korea.tistory.com/" target="_blank" rel="noopener">Read on Tistory &nearr;</a></p>';
 }
 
 function tfInit(POSTS) {
@@ -122,7 +160,7 @@ function tfInit(POSTS) {
     grid.innerHTML = CATEGORIES.map(function (c, i) {
       var n = POSTS.filter(function (p) { return p.cat === c.id; }).length;
       return '<button class="cat-card reveal" style="--i:' + i + '" data-cat="' + c.id + '" aria-pressed="false">' +
-        '<div class="top"><span>' + String(i + 1).padStart(2, '0') + '</span><span class="count">' + String(n).padStart(2, '0') + ' POSTS</span></div>' +
+        '<div class="top"><span class="count">' + String(n).padStart(2, '0') + ' posts</span></div>' +
         '<h3>' + tfEsc(c.label) + '</h3><span class="ko">' + tfEsc(c.ko) + '</span><p>' + tfEsc(c.desc) + '</p></button>';
     }).join('');
 
@@ -134,7 +172,7 @@ function tfInit(POSTS) {
       });
       if (!POSTS.length) list.innerHTML = tfPlaceholders(3);
       else list.innerHTML = items.length ? items.map(tfPostCard).join('') : '<p class="empty">// no entries match this filter.</p>';
-      count.textContent = POSTS.length ? items.length + ' / ' + POSTS.length + ' ENTRIES' + (state.cat !== 'all' ? ' · ' + tfCat(state.cat).label.toUpperCase() : '') : 'NO ENTRIES YET';
+      count.textContent = POSTS.length ? items.length + ' of ' + POSTS.length + ' posts' + (state.cat !== 'all' ? ' in ' + tfCat(state.cat).label : '') : '';
       grid.querySelectorAll('.cat-card').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.cat === state.cat)); });
       resetBtn.setAttribute('aria-pressed', String(state.cat === 'all'));
       window.tfReveal && window.tfReveal(list);
@@ -162,22 +200,32 @@ function tfInit(POSTS) {
     var idx = -1;
     local.forEach(function (p, i) { if (p.slug === slug) idx = i; });
     if (idx < 0) {
-      detail.innerHTML = '<div class="post-head"><a class="back" href="posts.html">&larr; BACK TO BLOG</a><p class="eyebrow">404 / NOT FOUND</p><h1>Entry not found</h1></div><div class="prose"><p>That post does not exist. Head back to the <a href="posts.html">blog</a>.</p></div>';
+      detail.innerHTML = '<div class="post-head"><a class="back" href="posts.html">&larr; Back to blog</a><p class="eyebrow">404 / NOT FOUND</p><h1>Entry not found</h1></div><div class="prose"><p>That post does not exist. Head back to the <a href="posts.html">blog</a>.</p></div>';
     } else {
       var p = local[idx], prev = local[idx + 1], next = local[idx - 1];
-      document.title = p.title + ' | TF.';
+      document.title = p.title + ' | TF';
       detail.innerHTML =
-        '<header class="post-head"><a class="back" href="posts.html">&larr; BACK TO BLOG</a>' +
+        '<header class="post-head"><a class="back" href="posts.html">&larr; Back to blog</a>' +
         '<p class="eyebrow">' + tfEsc(tfCat(p.cat).label) + '</p>' +
         '<h1>' + tfEsc(p.title) + '</h1>' +
         '<div class="post-meta" style="margin-top:1.6rem"><span>' + p.date + '</span></div></header>' +
-        '<article class="prose">' + p.body + '</article>' +
+        '<article class="prose">' + tfBody(p) + '</article>' +
         '<nav class="post-nav" aria-label="Post navigation">' +
-        (prev ? '<a href="post.html?slug=' + prev.slug + '"><small>&larr; OLDER</small>' + tfEsc(prev.title) + '</a>' : '<span></span>') +
-        (next ? '<a class="next" href="post.html?slug=' + next.slug + '"><small>NEWER &rarr;</small>' + tfEsc(next.title) + '</a>' : '<span></span>') +
+        (prev ? '<a href="post.html?slug=' + prev.slug + '"><small>&larr; Older</small>' + tfEsc(prev.title) + '</a>' : '<span></span>') +
+        (next ? '<a class="next" href="post.html?slug=' + next.slug + '"><small>Newer &rarr;</small>' + tfEsc(next.title) + '</a>' : '<span></span>') +
         '</nav>';
+      detail.querySelectorAll('.prose a[href^="http"]').forEach(function (a) { a.target = '_blank'; a.rel = 'noopener'; });
     }
   }
 }
 
-tfLoadTistory().then(function (ext) { tfInit(LOCAL_POSTS.concat(ext)); });
+/* A post that exists on this site hides its Tistory twin (same title). */
+function tfKey(t) { return String(t).toLowerCase().replace(/[^0-9a-z\u3131-\uD79D]/g, ''); }
+
+Promise.all([tfLoadMarkdown(), tfLoadTistory()]).then(function (r) {
+  var mine = LOCAL_POSTS.concat(r[0]);
+  var seen = {};
+  mine.forEach(function (p) { seen[tfKey(p.title)] = true; });
+  var ext = r[1].filter(function (p) { return !seen[tfKey(p.title)]; });
+  tfInit(mine.concat(ext));
+});
