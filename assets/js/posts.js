@@ -29,7 +29,8 @@ var LOCAL_POSTS = [];
    Add the file name (without .md) to this list, newest first or any order.
    Start from posts/_template.md. */
 var MD_POSTS = [
-  'blackhat-2025-ecscape'
+  'blackhat-2025-ecscape',
+  'me'
 ];
 
 /* ---------- helpers ---------- */
