@@ -30,7 +30,8 @@ var LOCAL_POSTS = [];
    Start from posts/_template.md. */
 var MD_POSTS = [
   'blackhat-2025-ecscape',
-  'me'
+  'me',
+  'ids-ips'
 ];
 
 /* ---------- helpers ---------- */
