@@ -31,7 +31,8 @@ var LOCAL_POSTS = [];
 var MD_POSTS = [
   'blackhat-2025-ecscape',
   'me',
-  'ids-ips'
+  'ids-ips',
+  'retro'
 ];
 
 /* ---------- helpers ---------- */
