@@ -1,4 +1,9 @@
-# 퍼징(Fuzzing) 입문: 개념부터 libFuzzer · AFL++ · Jackalope 실습까지
+---
+title: "퍼징(Fuzzing) 입문: libFuzzer, AFL++, Jackalope 실습"
+cat: notes
+date: 2026.11.26
+summary: "퍼징의 개념과 종류를 정리하고 세 가지 퍼저를 직접 돌려 비교해봤다."
+---
 
 ## 미션
 
