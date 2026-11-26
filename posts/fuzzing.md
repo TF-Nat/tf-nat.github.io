@@ -1,8 +1,8 @@
 ---
-title: "퍼징(Fuzzing) 입문: libFuzzer, AFL++, Jackalope 실습"
+title: 퍼징(Fuzzing) 입문: libFuzzer, AFL++, Jackalope 실습
 cat: notes
 date: 2026.11.26
-summary: "퍼징의 개념과 종류를 정리하고 세 가지 퍼저를 직접 돌려 비교해봤다."
+summary: 퍼징의 개념과 종류를 정리하고 세 가지 퍼저를 직접 돌려 비교해봤다.
 ---
 
 ## 미션
@@ -147,7 +147,7 @@ LLVM 프로젝트의 coverage-guided 퍼징 엔진이다. 테스트할 코드와
 
 "FUZZ" 찾기! 입력이 `FUZZ`로 시작하면 `abort()`를 호출하는 코드를 작성했다. `abort()`는 프로그램을 강제로 비정상 종료시키는 함수다. 즉 **일부러 crash가 나는 지점을 심어 둔 것**이다.
 
-![처음 작성한 target.c](images/01-target-first.png)
+![처음 작성한 target.c](posts/images/01-target-first.png)
 
 | 코드 | 뜻 |
 |---|---|
@@ -176,7 +176,7 @@ clang -g -O1 -fsanitize=fuzzer,address target.c -o fuzz
 | `-o fuzz` | 실행 파일 이름을 `fuzz`로 |
 | `./fuzz -seed=1` | 실행. 난수 시작값을 1로 고정 |
 
-![heap-buffer-overflow 에러](images/02-heap-overflow.png)
+![heap-buffer-overflow 에러](posts/images/02-heap-overflow.png)
 
 그런데 `FUZZ`를 찾기도 전에 다른 에러가 났다.
 
@@ -187,7 +187,7 @@ clang -g -O1 -fsanitize=fuzzer,address target.c -o fuzz
 
 ### 5-4. 수정
 
-![size 조건을 추가한 target.c](images/03-target-fixed.png)
+![size 조건을 추가한 target.c](posts/images/03-target-fixed.png)
 
 `data[3]`까지 읽으려면 4바이트 이상이어야 해서 `size >= 4` 조건을 추가했다.
 
@@ -195,7 +195,7 @@ clang -g -O1 -fsanitize=fuzzer,address target.c -o fuzz
 
 같은 명령으로 다시 빌드하고 실행했다.
 
-![libFuzzer 실행 결과](images/04-libfuzzer-result.png)
+![libFuzzer 실행 결과](posts/images/04-libfuzzer-result.png)
 
 로그 한 줄은 이렇게 읽는다.
 
@@ -225,7 +225,7 @@ clang -g -O1 -fsanitize=fuzzer,address target.c -o fuzz
 
 crash를 일으킨 입력은 `crash-...` 파일로 저장된다.
 
-![crash 파일 확인과 재실행](images/05-crash-files.png)
+![crash 파일 확인과 재실행](posts/images/05-crash-files.png)
 
 | 명령어 | 뜻 |
 |---|---|
@@ -280,7 +280,7 @@ AFL_SKIP_CPUFREQ=1 AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1 afl-fuzz -i seeds -o 
 
 ### 6-2. 결과
 
-![AFL++ 상태 화면과 crash 입력](images/06-afl-result.png)
+![AFL++ 상태 화면과 crash 입력](posts/images/06-afl-result.png)
 
 | 화면 항목 | 값 | 뜻 |
 |---|---|---|
@@ -337,7 +337,7 @@ mkdir -p in && printf 'AAAA' > in/seed1
 | `-cmp_coverage` | 여러 바이트를 한 번에 비교하는 조건을 통과하기 쉽게 해준다 |
 | `-- ./test -m @@` | 대상 프로그램. `@@`는 공유 메모리 이름으로 바뀐다 |
 
-![Jackalope 실행 화면](images/07-jackalope-run.png)
+![Jackalope 실행 화면](posts/images/07-jackalope-run.png)
 
 | 출력 | 뜻 |
 |---|---|
@@ -349,7 +349,7 @@ mkdir -p in && printf 'AAAA' > in/seed1
 
 ### 7-2. 뭘 찾은 걸까?
 
-![Jackalope crash 입력과 원인 코드](images/08-jackalope-crash.png)
+![Jackalope crash 입력과 원인 코드](posts/images/08-jackalope-crash.png)
 
 찾은 입력은 `test`다. 파일 이름 끝의 `_1`, `_2`는 같은 crash의 입력이 여러 번 저장된 것이다.
 
