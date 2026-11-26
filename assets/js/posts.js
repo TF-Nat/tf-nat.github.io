@@ -32,7 +32,8 @@ var MD_POSTS = [
   'blackhat-2025-ecscape',
   'me',
   'ids-ips',
-  'retro'
+  'retro',
+  'fuzzing'
 ];
 
 /* ---------- helpers ---------- */
